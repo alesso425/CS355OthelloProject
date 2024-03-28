@@ -1,0 +1,28 @@
+CS355 Project
+
+You are developing an Othello game without a graphical user interface. For information about the Othello game, please refer to the sites below:
+
+https://www.worldothello.org/about/about-othello
+
+https://www.wikihow.com/Play-Othello
+
+https://cardgames.io/reversi/
+
+
+Your Othello game must be developed as a server and client program. The server program waits for clients to start the game. If the client connects to the server program, the game starts. The server must be able to play games with multiple clients simultaneously, not just one client. And after the game ends, the server program notifies who is the winner between the server and the client and ends the connection with the client.
+
+This project does not develop a graphical user interface using Java Swing or FX. However, some form of game board must be provided to the clients. Regarding this, each team is encouraged to plan a creative console game board.
+
+This is Team project.  Each team member must contribute to write codes and develop entire game. Team member evaluation form will be provided at the end of the semester and will be reflected in each member's project grade. There may be a difference of more than 30 points.
+
+
+
+Project Due: April 30, 2024. 9:50 A.M.
+
+Submission:  Server and Client program codes
+
+Project Demonstration:  The presentation will be held on April 30th during class hours.
+
+
+
+I will not accept submissions of any kind once the Black Board closes. Each team must be aware of the submission date and make sure to submit only through Black Board.
