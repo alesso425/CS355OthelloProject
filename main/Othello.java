@@ -306,6 +306,7 @@ public class Othello {      //Test.
         }
         printBoard();
     }
+     
     public ArrayList<int[][]> allLegalMoves(boolean player)
     {
         int[][] x;
