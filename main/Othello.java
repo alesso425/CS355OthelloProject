@@ -322,6 +322,53 @@ public class Othello {
                     }
                 }
             }
+            //up
+            for (int i = row - 1; i > 0; i--) {
+                if (board[i][column].equals("-")) {
+                    result[0][0] = -1;
+                    result[0][1] = -1;
+                    break;
+                } else if (board[i][column].equals("X")) {
+                    result[0][0] = i;
+                    result[0][1] = column;
+                    break;
+                } else {
+                    result[0][0] = -1;
+                    result[0][1] = -1;
+                }
+            }
+            //up-right
+            for(int i = column + 1; i < board.length; i++){
+                for(int j = row + 1; j < board[row].length; j++){
+                    if(board[i][j].equals("-")){
+                        result[1][0] = -1;
+                        result[1][1] = -1;
+                        break;
+                    }else if(board[i][j].equals("X")){
+                        result[1][0] = i;
+                        result[1][1] = j;
+                        break;
+                    }else {
+                        result[1][0] = -1;
+                        result[1][1] = -1;
+                    }
+                }
+            }
+            //right
+            for (int i = row + 1; i < board.length; i++) {
+                if (board[i][column].equals("-")) {
+                    result[0][0] = -1;
+                    result[0][1] = -1;
+                    break;
+                } else if (board[i][column].equals("X")) {
+                    result[0][0] = i;
+                    result[0][1] = column;
+                    break;
+                } else {
+                    result[0][0] = -1;
+                    result[0][1] = -1;
+                }
+            }
         }
         return result;
     }
