@@ -285,14 +285,15 @@ public class Othello {
     }
     public ArrayList<int[][]> allLegalMoves(boolean player)
     {
-        int[][] x;
+        int[] legalMove;
+        int[][] legalMoves;
         if (player)
         {
             for (int i = 0; i <= board.length; i++)
             {
                 for (int j = 0; j <= board[i].length; j++)
                 {
-                    if (isLegal( i, j))
+                    if (isLegal(i, j))
                     {
 
                     }
@@ -312,14 +313,24 @@ public class Othello {
                 }
             }
         }
-        return x;
+        return legalMoves;
     }
 
     public boolean isLegal(int row, int column)
     {
-        boolean con;
+        boolean con = false;
+        int [][] legal = getLegal(true, row, column);
 
-        
+        for (int i = 0; i < legal.length; i++)
+        {
+            if (legal[i][0] != -1)
+            {
+                con = true;
+            }
+            else {
+                con = false;
+            }
+        }
 
         return con;
     }
