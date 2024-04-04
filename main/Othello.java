@@ -283,45 +283,8 @@ public class Othello {
         }
         printBoard();
     }
-    public ArrayList<int[][]> allLegalMoves(boolean player)
-    {
-        int[][] x;
-        if (player)
-        {
-            for (int i = 0; i <= board.length; i++)
-            {
-                for (int j = 0; j <= board[i].length; j++)
-                {
-                    if (isLegal( i, j))
-                    {
+    public ArrayList<int[]> allLegalMoves(boolean player){
 
-                    }
-                }
-            }
-        }
-        else
-        {
-            for (int i = 0; i <= board.length; i++)
-            {
-                for (int j = 0; j <= board[i].length; j++)
-                {
-                    if (isLegal(i, j))
-                    {
-
-                    }
-                }
-            }
-        }
-        return x;
-    }
-
-    public boolean isLegal(int row, int column)
-    {
-        boolean con;
-
-        
-
-        return con;
     }
 
     public int[][] getLegal(boolean player, int row, int column){ //Makes a 2D-array for the location of legal moves left, up-left, up, up-right, right, down-right, down, down-left
