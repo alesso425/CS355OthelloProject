@@ -1,7 +1,7 @@
 package main;
 import java.util.ArrayList;
 
-public class Othello {
+public class Othello {      //Test.
     private String name;
     private String pass;
     private String[][] board;
