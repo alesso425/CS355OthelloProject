@@ -18,8 +18,10 @@ public class Test {
         test.placePiece(false, 4, 5);
         test.placePiece(false, 4, 6);
         test.placePiece(false,4, 7);
-        test.setHoriz(true, 4, 4);
-        test.setVert(true, 4, 4);
+        test.placePiece(true, 5, 2);
+        test.placePiece(true, 2, 5);
+        test.setDiag2(true, 5, 2);
+
 
     }
 }
