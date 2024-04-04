@@ -63,7 +63,6 @@ public class Othello {      //Test.
                     for (int j = column + 1; j < i; j++) {
                         board[row][j] = "X";
                     }
-                }else if(i == 8){
                     break;
                 }
             }
@@ -71,11 +70,9 @@ public class Othello {      //Test.
                 if (board[row][i].equals("-")) {
                     break;
                 } else if (board[row][i].equals("X")) {
-
                     for (int j = column - 1; j > i; j--) {
                         board[row][j] = "X";
                     }
-                }else if(i == 1){
                     break;
                 }
             }
@@ -87,7 +84,6 @@ public class Othello {      //Test.
                     for (int j = column + 1; j < i; j++) {
                         board[row][j] = "O";
                     }
-                }else if(i == 8){
                     break;
                 }
             }
@@ -95,11 +91,9 @@ public class Othello {      //Test.
                 if (board[row][i].equals("-")) {
                     break;
                 } else if (board[row][i].equals("O")) {
-
                     for (int j = column - 1; j > i; j--) {
                         board[row][j] = "O";
                     }
-                }else if(i == 1){
                     break;
                 }
             }
@@ -115,7 +109,6 @@ public class Othello {      //Test.
                     for (int j = row + 1; j < i; j++) {
                         board[j][column] = "X";
                     }
-                }else if(i == 8){
                     break;
                 }
             }
@@ -126,7 +119,6 @@ public class Othello {      //Test.
                     for (int j = row - 1; j > i; j--) {
                         board[j][column] = "X";
                     }
-                }else if(i == 1){
                     break;
                 }
             }
@@ -138,7 +130,6 @@ public class Othello {      //Test.
                     for (int j = row + 1; j < i; j++) {
                         board[j][column] = "O";
                     }
-                }else if(i == 8){
                     break;
                 }
             }
@@ -146,11 +137,9 @@ public class Othello {      //Test.
                 if (board[i][column].equals("-")) {
                     break;
                 } else if (board[i][column].equals("O")) {
-
                     for (int j = row - 1; j > i; j--) {
                         board[i][column] = "O";
                     }
-                }else if(i == 1){
                     break;
                 }
             }
@@ -158,22 +147,152 @@ public class Othello {      //Test.
         printBoard();
     }
     public void setDiag2(boolean player, int row, int column){
-        int x = column + 1;
-        int y = row - 1;
-        int x2 = column+1;
-        int y2 = row-1;
-        while(x < board.length && y > 0) { //Up-Right;
-            if(board[y][x].equals("-")){
-                break;
-            }else if (board[y][x].equals("X")){
-                while(y2 > y && x2 < x){
-                    board[y2][x2] = "X";
-                    y2--;
-                    x2++;
+        if(player){
+            int x = column + 1;
+            int y = row - 1;
+            int x2 = column+1;
+            int y2 = row-1;
+            while(x < board.length && y > 0) { //Up-Right;
+                if(board[y][x].equals("-")){
+                    break;
+                }else if (board[y][x].equals("X")){
+                    while(x2 < x && y2 > y){
+                        board[y2][x2] = "X";
+                        x2++;
+                        y2--;
+                    }
+                    break;
                 }
+                x++;
+                y--;
             }
-            x++;
-            y--;
+            x = column + 1;
+            x2 = column + 1;
+            y = row + 1;
+            y2 = row + 1;
+            while(x < board.length && y < board.length) { //Down-Right
+                if(board[y][x].equals("-")){
+                    break;
+                }else if(board[y][x].equals("X")){
+                    while(x2 < x && y2 < y){
+                        board[y2][x2] = "X";
+                        x2++;
+                        y2++;
+                    }
+                    break;
+                }
+                x++;
+                y++;
+            }
+            x = column - 1;
+            x2 = column - 1;
+            y = row + 1;
+            y2 = row + 1;
+            while(x > 0 && y < board.length) { //Down-Left
+                if(board[y][x].equals("-")){
+                    break;
+                }else if(board[y][x].equals("X")){
+                    while(x2 > x && y2 < y){
+                        board[y2][x2] = "X";
+                        x2--;
+                        y2++;
+                    }
+                    break;
+                }
+                x--;
+                y++;
+            }
+            x = column - 1;
+            x2 = column - 1;
+            y = row - 1;
+            y2 = row - 1;
+            while(x > 0 && y > 0) { //Up-Left
+                if (board[y][x].equals("-")){
+                    break;
+                }else if(board[y][x].equals("X")){
+                    while(x2 > x && y2 > y){
+                        board[y2][x2] = "X";
+                        x2--;
+                        y2--;
+                    }
+                    break;
+                }
+                x--;
+                y--;
+            }
+        }else{
+            int x = column + 1;
+            int y = row - 1;
+            int x2 = column+1;
+            int y2 = row-1;
+            while(x < board.length && y > 0) { //Up-Right;
+                if(board[y][x].equals("-")){
+                    break;
+                }else if (board[y][x].equals("O")){
+                    while(x2 < x && y2 > y){
+                        board[y2][x2] = "O";
+                        x2++;
+                        y2--;
+                    }
+                    break;
+                }
+                x++;
+                y--;
+            }
+            x = column + 1;
+            x2 = column + 1;
+            y = row + 1;
+            y2 = row + 1;
+            while(x < board.length && y < board.length) { //Down-Right
+                if(board[y][x].equals("-")){
+                    break;
+                }else if(board[y][x].equals("O")){
+                    while(x2 < x && y2 < y) {
+                        board[y2][x2] = "O";
+                        x2++;
+                        y2++;
+                    }
+                    break;
+                }
+                x++;
+                y++;
+            }
+            x = column - 1;
+            x2 = column - 1;
+            y = row + 1;
+            y2 = row + 1;
+            while(x > 0 && y < board.length) { //Down-Left
+                if(board[y][x].equals("-")){
+                    break;
+                }else if(board[y][x].equals("O")){
+                    while(x2 > x && y2 < y){
+                        board[y2][x2] = "O";
+                        x2--;
+                        y2++;
+                    }
+                    break;
+                }
+                x--;
+                y++;
+            }
+            x = column - 1;
+            x2 = column - 1;
+            y = row - 1;
+            y2 = row - 1;
+            while(x > 0 && y > 0) { //Up-Left
+                if (board[y][x].equals("-")){
+                    break;
+                }else if(board[y][x].equals("O")){
+                    while(x2 > x && y2 > y){
+                        board[y2][x2] = "O";
+                        x2--;
+                        y2--;
+                    }
+                    break;
+                }
+                x--;
+                y--;
+            }
         }
         printBoard();
     }
@@ -306,7 +425,8 @@ public class Othello {      //Test.
         }
         printBoard();
     }
-     
+     **/
+    /**
     public ArrayList<int[][]> allLegalMoves(boolean player)
     {
         int[][] x;
@@ -338,16 +458,21 @@ public class Othello {      //Test.
         }
         return x;
     }
-
-    public boolean isLegal(int row, int column)
+    **/
+    public boolean isLegal(boolean player, int row, int column)
     {
-        boolean con;
-
-
+        boolean con = false;
+        int[][] arr = getLegal(player, row, column);
+        for(int i = 0; i < arr.length; i++){
+           if(arr[i][0] != -1){
+               con = true;
+               break;
+           }
+        }
 
         return con;
     }
-    **/
+
     public int[][] getLegal(boolean player, int row, int column){ //Makes a 2D-array for the location of legal moves left, up-left, up, up-right, right, down-right, down, down-left
         int[][] result = new int[8][2];
         if(player) {
@@ -367,21 +492,23 @@ public class Othello {      //Test.
                 }
             }
             //up-left
-            for(int i = column - 1; i > 0; i--){
-                for(int j = row + 1; j < board[row].length; j++){
-                    if(board[i][j].equals("-")){
-                        result[1][0] = -1;
-                        result[1][1] = -1;
-                        break;
-                    }else if(board[i][j].equals("X")){
-                        result[1][0] = i;
-                        result[1][1] = j;
-                        break;
-                    }else {
-                        result[1][0] = -1;
-                        result[1][1] = -1;
-                    }
+            int x = column - 1;
+            int y = row - 1;
+            while(x > 0 && y > 0) {
+                if (board[y][x].equals("-")){
+                    result[1][0] = -1;
+                    result[1][1] = -1;
+                    break;
+                }else if(board[y][x].equals("X")){
+                    result[1][0] = y;
+                    result[1][1] = x;
+                    break;
+                }else{
+                    result[1][0] = -1;
+                    result[1][1] = -1;
                 }
+                x--;
+                y--;
             }
             //up
             for (int i = row - 1; i > 0; i--) {
@@ -399,21 +526,23 @@ public class Othello {      //Test.
                 }
             }
             //up-right
-            for(int i = column + 1; i < board.length; i++){
-                for(int j = row + 1; j < board[row].length; j++){
-                    if(board[i][j].equals("-")){
-                        result[3][0] = -1;
-                        result[3][1] = -1;
-                        break;
-                    }else if(board[i][j].equals("X")){
-                        result[3][0] = i;
-                        result[3][1] = j;
-                        break;
-                    }else {
-                        result[3][0] = -1;
-                        result[3][1] = -1;
-                    }
+            x = column + 1;
+            y = row - 1;
+            while(x < board.length && y > 0) { //Up-Right;
+                if(board[y][x].equals("-")){
+                    result[3][0] = -1;
+                    result[3][1] = -1;
+                    break;
+                }else if (board[y][x].equals("X")){
+                    result[3][0] = y;
+                    result[3][1] = x;
+                    break;
+                }else{
+                    result[3][0] = -1;
+                    result[3][1] = -1;
                 }
+                x++;
+                y--;
             }
             //right
             for (int i = column + 1; i < board.length; i++) {
@@ -431,21 +560,23 @@ public class Othello {      //Test.
                 }
             }
             //down-right
-            for(int i = column + 1; i < board.length; i++){
-                for(int j = row - 1; j > 0; j--){
-                    if(board[i][j].equals("-")){
-                        result[5][0] = -1;
-                        result[5][1] = -1;
-                        break;
-                    }else if(board[i][j].equals("X")){
-                        result[5][0] = i;
-                        result[5][1] = j;
-                        break;
-                    }else {
-                        result[5][0] = -1;
-                        result[5][1] = -1;
-                    }
+            x = column + 1;
+            y = row + 1;
+            while(x < board.length && y < board.length) { //Down-Right
+                if(board[y][x].equals("-")){
+                    result[5][0] = -1;
+                    result[5][1] = -1;
+                    break;
+                }else if(board[y][x].equals("X")){
+                    result[5][0] = y;
+                    result[5][1] = x;
+                    break;
+                }else{
+                    result[5][0] = -1;
+                    result[5][1] = -1;
                 }
+                x++;
+                y++;
             }
             //down
             for (int i = row + 1; i < board[row].length; i++) {
@@ -463,21 +594,159 @@ public class Othello {      //Test.
                 }
             }
             //down-left
-            for(int i = column - 1; i > 0; i--){
-                for(int j = row + 1; j < board[row].length; j++){
-                    if(board[i][j].equals("-")){
-                        result[7][0] = -1;
-                        result[7][1] = -1;
-                        break;
-                    }else if(board[i][j].equals("X")){
-                        result[7][0] = i;
-                        result[7][1] = j;
-                        break;
-                    }else {
-                        result[7][0] = -1;
-                        result[7][1] = -1;
-                    }
+            x = column - 1;
+            y = row + 1;
+            while(x > 0 && y < board.length) { //Down-Left
+                if(board[y][x].equals("-")){
+                    result[7][0] = -1;
+                    result[7][1] = -1;
+                    break;
+                }else if(board[y][x].equals("X")){
+                    result[7][0] = y;
+                    result[7][1] = x;
+                    break;
+                }else{
+                    result[7][0] = -1;
+                    result[7][1] = -1;
                 }
+                x--;
+                y++;
+            }
+        }else {
+            for (int i = column - 1; i > 0; i--) {
+                if (board[row][i].equals("-")) {
+                    result[0][0] = -1;
+                    result[0][1] = -1;
+                    break;
+                } else if (board[row][i].equals("O")) {
+                    result[0][0] = row;
+                    result[0][1] = i;
+                    break;
+                } else {
+                    result[0][0] = -1;
+                    result[0][1] = -1;
+                }
+            }
+            //up-left
+            int x = column - 1;
+            int y = row - 1;
+            while (x > 0 && y > 0) {
+                if (board[y][x].equals("-")) {
+                    result[1][0] = -1;
+                    result[1][1] = -1;
+                    break;
+                } else if (board[y][x].equals("O")) {
+                    result[1][0] = y;
+                    result[1][1] = x;
+                    break;
+                } else {
+                    result[1][0] = -1;
+                    result[1][1] = -1;
+                }
+                x--;
+                y--;
+            }
+            //up
+            for (int i = row - 1; i > 0; i--) {
+                if (board[i][column].equals("-")) {
+                    result[2][0] = -1;
+                    result[2][1] = -1;
+                    break;
+                } else if (board[i][column].equals("O")) {
+                    result[2][0] = i;
+                    result[2][1] = column;
+                    break;
+                } else {
+                    result[2][0] = -1;
+                    result[2][1] = -1;
+                }
+            }
+            //up-right
+            x = column + 1;
+            y = row - 1;
+            while (x < board.length && y > 0) { //Up-Right;
+                if (board[y][x].equals("-")) {
+                    result[3][0] = -1;
+                    result[3][1] = -1;
+                    break;
+                } else if (board[y][x].equals("O")) {
+                    result[3][0] = y;
+                    result[3][1] = x;
+                    break;
+                } else {
+                    result[3][0] = -1;
+                    result[3][1] = -1;
+                }
+                x++;
+                y--;
+            }
+            //right
+            for (int i = column + 1; i < board.length; i++) {
+                if (board[row][i].equals("-")) {
+                    result[4][0] = -1;
+                    result[4][1] = -1;
+                    break;
+                } else if (board[row][i].equals("O")) {
+                    result[4][0] = row;
+                    result[4][1] = i;
+                    break;
+                } else {
+                    result[4][0] = -1;
+                    result[4][1] = -1;
+                }
+            }
+            //down-right
+            x = column + 1;
+            y = row + 1;
+            while (x < board.length && y < board.length) { //Down-Right
+                if (board[y][x].equals("-")) {
+                    result[5][0] = -1;
+                    result[5][1] = -1;
+                    break;
+                } else if (board[y][x].equals("O")) {
+                    result[5][0] = y;
+                    result[5][1] = x;
+                    break;
+                } else {
+                    result[5][0] = -1;
+                    result[5][1] = -1;
+                }
+                x++;
+                y++;
+            }
+            //down
+            for (int i = row + 1; i < board[row].length; i++) {
+                if (board[i][column].equals("-")) {
+                    result[6][0] = -1;
+                    result[6][1] = -1;
+                    break;
+                } else if (board[i][column].equals("O")) {
+                    result[6][0] = i;
+                    result[6][1] = column;
+                    break;
+                } else {
+                    result[6][0] = -1;
+                    result[6][1] = -1;
+                }
+            }
+            //down-left
+            x = column - 1;
+            y = row + 1;
+            while (x > 0 && y < board.length) { //Down-Left
+                if (board[y][x].equals("-")) {
+                    result[7][0] = -1;
+                    result[7][1] = -1;
+                    break;
+                } else if (board[y][x].equals("O")) {
+                    result[7][0] = y;
+                    result[7][1] = x;
+                    break;
+                } else {
+                    result[7][0] = -1;
+                    result[7][1] = -1;
+                }
+                x--;
+                y++;
             }
         }
         return result;

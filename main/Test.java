@@ -4,6 +4,7 @@ public class Test {
     public static void main(String[] args){
         Othello test = new Othello("abc", "def");
         test.placePiece(true, 4, 4);
+        /**
         test.placePiece(true, 4, 1);
         test.placePiece(true, 1, 4);
         test.placePiece(true, 4, 8);
@@ -20,8 +21,14 @@ public class Test {
         test.placePiece(false,4, 7);
         test.placePiece(true, 5, 2);
         test.placePiece(true, 2, 5);
-        test.setDiag2(true, 5, 2);
-
+         **/
+        int[][] arr = test.getLegal(true, 4, 4);
+        for(int i = 0; i < arr.length; i++){
+            System.out.println();
+            for(int j = 0; j < arr[i].length; j++){
+                System.out.print(arr[i][j]);
+            }
+        }
 
     }
 }
