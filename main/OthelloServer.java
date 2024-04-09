@@ -1,5 +1,8 @@
 package main;
 
+import java.io.*;
+import java.net.*;
+
 public class OthelloServer {
 	public static void main(String[] args) {
         try {
@@ -8,7 +11,7 @@ public class OthelloServer {
             System.out.println("Game server is running...");
 
             while (true) {
-                Socket clientSocket = serverSocket.accept();uikycv
+                Socket clientSocket = serverSocket.accept();
                 System.out.println("New client connected: " + clientSocket.getInetAddress());
 
                 // Handle client requests in separate threads
@@ -33,15 +36,15 @@ class ClientHandler extends Thread {
 			
 			//Prompt if player is new, If so, ask for new name and pass. If not, ask for saved name and pass. 
 			
-			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out.println("[SERVER] >>> Are you new to the game?    Yes or No? ");
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            System.out.println("[SERVER] >>> Are you new to the game?    Yes or No? ");
 			String clientResp; 
-			while ((clientResp = in.readLine() != null)
+			while (String.valueOf(in.readLine() != null)
 			{
 				if (clientResp.equals("yes"))
 				{
-					System.out.println("Client said yes.") //For Troubleshooting. Will comment after Othello 
+					System.out.println("Client said yes."); //For Troubleshooting. Will comment after Othello
 					//Create a new game (new Othello Object prompt player for  name and personal pass. 
 				}
 				else 
@@ -52,21 +55,11 @@ class ClientHandler extends Thread {
 				
 				}
 			}
-			
-			
-			
-			
-			
-			
-			
-			
+
 			
 			
            //Save Game logic
-		   
-		   
-		   
-		   
+
 		   
 			
             // Read from/write to clientSocket's input/output streams
@@ -77,8 +70,10 @@ class ClientHandler extends Thread {
            // out.println("ACK: Game state saved successfully!");
 
             clientSocket.close();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }
