@@ -432,9 +432,9 @@ public class Othello {      //Test.
         int[][] x;
         if (player)
         {
-            for (int i = 0; i <= board.length; i++)
+            for (int i = 0; i < board.length; i++)
             {
-                for (int j = 0; j <= board[i].length; j++)
+                for (int j = 0; j < board[i].length; j++)
                 {
                     if (isLegal( i, j))
                     {
@@ -445,9 +445,9 @@ public class Othello {      //Test.
         }
         else
         {
-            for (int i = 0; i <= board.length; i++)
+            for (int i = 0; i < board.length; i++)
             {
-                for (int j = 0; j <= board[i].length; j++)
+                for (int j = 0; j < board[i].length; j++)
                 {
                     if (isLegal(i, j))
                     {
