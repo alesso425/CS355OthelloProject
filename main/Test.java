@@ -30,7 +30,13 @@ public class Test {
         }
         ArrayList<int[]> list = new ArrayList<int[]>();
         list = test.allLegalMoves(true);
-        System.out.println(list);
+        int[] x = new int[2];
+        for(int i = 0; i < list.size(); i++) {
+            x = list.get(i);
+            System.out.println();
+            System.out.print(x[0]);
+            System.out.print(" " + x[1]);
+        }
 
     }
 }
