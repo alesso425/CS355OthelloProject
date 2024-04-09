@@ -146,7 +146,7 @@ public class Othello {      //Test.
         }
         printBoard();
     }
-    public void setDiag(boolean player, int row, int column){
+    public void setDiag2(boolean player, int row, int column){
         if(player){
             int x = column + 1;
             int y = row - 1;
@@ -296,21 +296,149 @@ public class Othello {      //Test.
         }
         printBoard();
     }
+    /**
+    public void setDiag(boolean player, int row, int column){
+        if(player) {
+            for (int i = row-1; i > 0; i--) {        //Up-Right
+                for (int j = column + 1; j < board[row].length; j++) {
+                    if (board[i][j].equals("-")) {
+                        break;
+                    } else if (board[i][j].equals("X")) {
+                        for (int k = row - 1; k > i; k--) {
+                            for (int l = column + 1; l < j; l++) {
+                                System.out.println("Up-Right");
+                                board[k][l] = "X";
+                            }
+                        }
+                    }
+                }
+            }
+            for (int i = row-1; i > 0; i--) {        //Down-Right
+                for (int j = column + 1; j < board.length; j++) {
+                    if (board[i][j].equals("-")) {
+                        break;
+                    } else if (board[i][j].equals("X")) {
+                        for (int k = row - 1; k > i; k--) {
+                            for (int l = column + 1; l < j; l++) {
+                                System.out.println("Down-Right");
+                                board[k][l] = "X";
+                            }
+                        }
+                    }
+                }
+            }
+            for (int i = row-1; i > 0; i--) {        //Up-Left
+                for (int j = column + 1; j < board[row].length; j++) {
+                    if (board[i][j].equals("-")) {
+                        break;
+                    } else if (board[i][j].equals("X")) {
+                        for (int k = row + 1; j > i; k++) {
+                            for(int l = column + 1; l < j; l++) {
+                                System.out.println("Up-Left");
+                                board[k][l] ="X";
+                            }
+                        }
+                    } else if (i == 8 || j == 8) {
+                        break;
+                    }
+                }
+            }
+            for (int i = row + 1; i < board.length; i++) {        //Down-Left
+                for (int j = column - 1; j > 0; j--) {
+                    if (board[i][j].equals("-")) {
+                        break;
+                    } else if (board[i][j].equals("X")) {
+                        for (int k = row + 1; k < i; k++) {
 
-    public ArrayList<int[]> allLegalMoves(boolean player)
+                            for(int l = column - 1; l > j; l--) {
+                                System.out.println("Down-Left");
+                                board[k][l] ="X";
+                                System.out.println("(" + k + "," + l + ")");
+                            }
+                        }
+                    } else if (i == 8 || j == 8) {
+                        break;
+                    }
+                }
+            }
+        }else{
+            for (int i = row+1; i < board.length; i++) {        //Up-Right
+                for (int j = column + 1; j < board[row].length; j++) {
+                    if (board[i][j].equals("-")) {
+                        break;
+                    } else if (board[i][j].equals("O")) {
+                        for (int k = row + 1; j < i; j++) {
+                            for(int l = column + 1; l < j; k++) {
+                                board[k][l] ="O";
+                            }
+                        }
+                    } else if (i == 8 || j == 8) {
+                        break;
+                    }
+                }
+            }
+            for (int i = row+1; i < board.length; i++) {        //Down-Right
+                for (int j = column - 1; j > 0; j--) {
+                    if (board[i][j].equals("-")) {
+                        break;
+                    } else if (board[i][j].equals("O")) {
+                        for (int k = row + 1; j < i; k++) {
+                            for(int l = column - 1; l > j; l--) {
+                                board[k][l] ="O";
+                            }
+                        }
+                    } else if (i == 8 || j == 8) {
+                        break;
+                    }
+                }
+            }
+            for (int i = row-1; i > 0; i--) {        //Up-Left
+                for (int j = column + 1; j < board[row].length; j++) {
+                    if (board[i][j].equals("-")) {
+                        break;
+                    } else if (board[i][j].equals("O")) {
+                        for (int k = row + 1; j > i; k++) {
+                            for(int l = column + 1; l < j; l++) {
+                                board[k][l] ="O";
+                            }
+                        }
+                    } else if (i == 8 || j == 8) {
+                        break;
+                    }
+                }
+            }
+            for (int i = row-1; i > 0; i--) {        //Down-Left
+                for (int j = column - 1; j > 0; j--) {
+                    if (board[i][j].equals("-")) {
+                        break;
+                    } else if (board[i][j].equals("O")) {
+                        for (int k = row - 1; j > i; k--) {
+                            for(int l = column - 1; l > j; l--) {
+                                board[k][l] ="O";
+                            }
+                        }
+                    } else if (i == 8 || j == 8) {
+                        break;
+                    }
+                }
+            }
+        }
+        printBoard();
+    }
+     **/
+    /**
+    public ArrayList<int[][]> allLegalMoves(boolean player)
     {
-        ArrayList<int[]> list = new ArrayList<int[]>();
-        int[] x;
+        int[][] x;
         if (player)
         {
             for (int i = 0; i <= board.length; i++)
             {
                 for (int j = 0; j <= board[i].length; j++)
                 {
-                    if (board[i][j].equals("X") && isLegal(true, i, j))
+                    if (isLegal( i, j))
                     {
-                        x = new int[]{i, j};
-                        list.add(x);
+
                     }
                 }
             }
@@ -321,16 +449,16 @@ public class Othello {      //Test.
             {
                 for (int j = 0; j <= board[i].length; j++)
                 {
-                    if (board[i][j].equals("O") && isLegal(false, i, j))
+                    if (isLegal(i, j))
                     {
-                        x = new int[]{i,};
-                        list.add(x);
+
                     }
                 }
             }
         }
-        return list;
+        return x;
     }
+    **/
     public boolean isLegal(boolean player, int row, int column)
     {
         boolean con = false;
