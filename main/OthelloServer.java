@@ -38,9 +38,10 @@ class ClientHandler extends Thread {
 			
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            out.write("[SERVER] >>> Are you new to the game?    Yes or No? ");
-			String clientResp; 
-			while (String.valueOf(in.readLine() != null)
+          
+            System.out.println("[SERVER] >>> Are you new to the game?    Yes or No? ");
+			String clientResp = null;
+			while (String.valueOf(in.readLine()) != null)
 			{
 				if (clientResp.equals("yes"))
 				{
