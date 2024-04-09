@@ -38,14 +38,14 @@ class ClientHandler extends Thread {
 			
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            System.out.println("[SERVER] >>> Are you new to the game?    Yes or No? ");
+            out.write("[SERVER] >>> Are you new to the game?    Yes or No? ");
 			String clientResp; 
 			while (String.valueOf(in.readLine() != null)
 			{
 				if (clientResp.equals("yes"))
 				{
 					System.out.println("Client said yes."); //For Troubleshooting. Will comment after Othello
-					//Create a new game (new Othello Object prompt player for  name and personal pass. 
+					//Create a new game (new Othello Object) prompt player for  name and personal pass.
 				}
 				else 
 				{
