@@ -1,5 +1,6 @@
 package main;
 import java.util.ArrayList;
+import java.lang.Math;
 
 public class Othello {      //Test.
     private String name;
@@ -35,23 +36,21 @@ public class Othello {      //Test.
         }
     }
 
-    public void placePiece(boolean player, int row, int column) {
-        if (player) {  //Player
-            /**
-            if (x != 0 && y != 0 && x != 1 && y != 1 && x != 9 && y != 9) {
-                boolean oppsq;
-                boolean plsq;
-                for(int i = 0; i < board.length; i++){
-
-                }
-         }
-             **/
-            board[row][column] = "X";
-
-        } else {
-            board[row][column] = "O";
-        }
+    public void placePiecePlayer(int row, int column) {
+        board[row][column] = "X";
+        setHoriz(true, row, column);
+        setVert(true, row, column);
+        setDiag(true, row, column);
+        board[row][column] = "O";
     printBoard();
+    }
+    public void placePieceCPU(){
+        int[] bestMove = getBestMove(false);
+        int row = bestMove[0];
+        int column = bestMove[1];
+        setHoriz(false, row, column);
+        setVert(false, row, column);
+        setDiag(false, row, column);
     }
 
     public void setHoriz(boolean player, int row, int column){
@@ -623,23 +622,34 @@ public class Othello {      //Test.
         }
         return result;
     }
-    /**
+
     public int[] getBestMove(boolean player){
         int[] move = new int[2];
-        for(int i = 0; i < board.length; i++){
-            for(int j = 0; j < board[i].length; j++){
-                if(player){
-                    if(i == 0){
-                        if()
+        int sum = 0;
+        int maxsum = 0;
+        ArrayList<int[]> moveList;
+        moveList = allLegalMoves(player);
+        int[][] legalList;
+        int[] coordinates = new int[2];
+        for(int i = 0; i < moveList.size(); i++){
+            coordinates = moveList.get(i);
+            legalList = getLegal(player, coordinates[0], coordinates[1]);
+            for(int j = 0; j < legalList.length; j++){
+                if(legalList[j][0] != -1 && legalList[j][1] != -1){
+                    if(legalList[j][1] != coordinates[1]){
+                        sum = sum + Math.abs(legalList[j][1] - coordinates[1]) - 1;
+                    }else{
+                        sum = sum + Math.abs(legalList[j][0] - coordinates[0]) - 1;
                     }
                 }
             }
+            if(sum > maxsum){
+                maxsum = sum;
+                move = moveList.get(i);
+            }
         }
-
-
         return move;
     }
-    **/
     public String getName(){
         return name;
     }
