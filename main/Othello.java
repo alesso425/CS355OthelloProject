@@ -25,6 +25,10 @@ public class Othello {      //Test.
             board[0][i] = Integer.toString(grid[i - 1]);
         }
         board[0][0] = " ";
+        board[4][4] = "O";
+        board[5][5] = "O";
+        board[4][5] = "X";
+        board[5][4] = "X";
     }
 
     public void printBoard() {
@@ -41,18 +45,20 @@ public class Othello {      //Test.
         setHoriz(true, row, column);
         setVert(true, row, column);
         setDiag(true, row, column);
-        board[row][column] = "O";
     printBoard();
     }
     public void placePieceCPU(){
         int[] bestMove = getBestMove(false);
         int row = bestMove[0];
         int column = bestMove[1];
+        board[row][column] = "O";
         setHoriz(false, row, column);
         setVert(false, row, column);
         setDiag(false, row, column);
     }
-
+    public void placePiece(int row, int column){
+        board[row][column] = "O";
+    }
     public void setHoriz(boolean player, int row, int column){
         if(player) {
             for (int i = column+1; i < board.length; i++) {
@@ -97,7 +103,6 @@ public class Othello {      //Test.
                 }
             }
         }
-        printBoard();
     }
     public void setVert(boolean player, int row, int column){
         if(player) {
@@ -143,7 +148,6 @@ public class Othello {      //Test.
                 }
             }
         }
-        printBoard();
     }
     public void setDiag(boolean player, int row, int column){
         if(player){
@@ -293,7 +297,6 @@ public class Othello {      //Test.
                 y--;
             }
         }
-        printBoard();
     }
 
     public ArrayList<int[]> allLegalMoves(boolean player)
@@ -306,7 +309,7 @@ public class Othello {      //Test.
             {
                 for (int j = 0; j < board[i].length; j++)
                 {
-                    if (board[i][j].equals("X") && isLegal(true, i, j))
+                    if (!board[i][j].equals("-") && isLegal(true, i, j))
                     {
                         x = new int[]{i, j};
                         list.add(x);
@@ -320,9 +323,9 @@ public class Othello {      //Test.
             {
                 for (int j = 0; j < board[i].length; j++)
                 {
-                    if (board[i][j].equals("O") && isLegal(false, i, j))
+                    if (board[i][j].equals("-") && isLegal(false, i, j))
                     {
-                        x = new int[]{i,};
+                        x = new int[]{i,j};
                         list.add(x);
                     }
                 }
@@ -335,7 +338,7 @@ public class Othello {      //Test.
         boolean con = false;
         int[][] arr = getLegal(player, row, column);
         for(int i = 0; i < arr.length; i++){
-           if(arr[i][0] != -1){
+           if(arr[i][0] > 0){
                con = true;
                break;
            }
@@ -647,6 +650,7 @@ public class Othello {      //Test.
                 maxsum = sum;
                 move = moveList.get(i);
             }
+            sum = 0;
         }
         return move;
     }
