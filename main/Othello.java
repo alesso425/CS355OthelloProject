@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import java.lang.Math;
 
 /**
- * The Othello class serves as the foundation of a game of Othello. When a client connects
- * to the server, a new thread launches an instance of Othello and the server and client
- * can interact with each other to play the game.
+ * The Othello class serves as the foundation of a game of Othello. When a client connects to the server, a new thread
+ * launches an instance of Othello and the server and client can interact with each other to play the game.
  */
 public class Othello {
     private String name;
@@ -16,8 +15,7 @@ public class Othello {
     private int[] grid;
 
     /**
-     * Othello constructor with name and password attributes; Initializes a playable board
-     * as a String matrix
+     * Othello constructor with name and password attributes; Initializes a playable board as a String matrix
      *
      * @param name username of the person
      * @param pass password for the game
@@ -42,14 +40,14 @@ public class Othello {
         }
         //changes the center four squares to two player chips and two computer chips
         board[0][0] = " ";
-        board[4][4] = "O";
+        board[4][4] = "O"; //player's piece
         board[5][5] = "O";
-        board[4][5] = "X";
+        board[4][5] = "X"; //computer's piece
         board[5][4] = "X";
     }
 
     /**
-     * The print board method traverse the existing board and prints out the matrix
+     * The print board method traverse the existing board and prints out the matrix.
      */
     public void printBoard() {
         for (int i = 0; i < board.length; i++) {
@@ -58,6 +56,28 @@ public class Othello {
                 System.out.print(board[i][j] + " ");
             }
         }
+    }
+
+    /**
+     * The countPieces() method traverses the board matrix and counts the total number of pieces for both the player
+     * and the computer, assigning them to two spaces in an integer matrix.
+     *
+     * @return an integer array of 2 numbers; first one is the total of player's pieces and the other is the total for
+     * computer pieces
+     */
+    public int[] countPieces()
+    {
+        int[] x = new int[2];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == "O"){
+                    x[1]++;
+                }else if(board[i][j] == "X"){
+                    x[2]++;
+                }
+            }
+        }
+        return x;
     }
 
     /**
@@ -72,10 +92,12 @@ public class Othello {
      */
     public void placePiecePlayer(int row, int column) {
         board[row][column] = "X";
+
         setHoriz(true, row, column);
         setVert(true, row, column);
         setDiag(true, row, column);
-    printBoard();
+
+        printBoard();
     }
 
     /**
@@ -89,6 +111,7 @@ public class Othello {
         int row = bestMove[0];
         int column = bestMove[1];
         board[row][column] = "O";
+
         setHoriz(false, row, column);
         setVert(false, row, column);
         setDiag(false, row, column);
@@ -105,14 +128,19 @@ public class Othello {
     }
 
     /**
-     * The setHoriz() method 
+     * The setHoriz() method changes the player's or computer's chips based on what coordinate is given in the
+     * horizontal direction. The method takes the boolean parameter to see if the method needs to be run for the player
+     * or computer, then takes the coordinates and traverses the board matrix to the left and right of the coordinates,
+     * changing the pieces to the player's or computer's pieces.
      *
-     * @param player
-     * @param row
-     * @param column
+     * @param player boolean that determines if the method should be run for the player of the computer
+     * @param row row coordinate in the board matrix
+     * @param column column coordinate in the board matrix
      */
     public void setHoriz(boolean player, int row, int column){
+        //if it is the player's turn
         if(player){
+            //traverse to the right of the coordinates and change each piece to X until the end off your pieces or board
             for (int i = column+1; i < board.length; i++) {
                 if (board[row][i].equals("-")) {
                     break;
@@ -123,6 +151,7 @@ public class Othello {
                     break;
                 }
             }
+            //traverse to the left of the coordinates and change each piece to X until the end of your pieces or board
             for (int i = column-1; i > 0; i--){
                 if (board[row][i].equals("-")) {
                     break;
@@ -133,7 +162,9 @@ public class Othello {
                     break;
                 }
             }
+        //if it is the computer's turn
         }else{
+            //traverse to the right of the coordinates and change each piece to O until the end of the CPU's pieces or board
             for (int i = column+1; i < board.length; i++) {
                 if (board[row][i].equals("-")) {
                     break;
@@ -144,6 +175,7 @@ public class Othello {
                     break;
                 }
             }
+            //traverse to the left of the coordinates and change each piece to O until the end of the CPU's pieces or board
             for (int i = column-1; i > 0; i--){
                 if (board[row][i].equals("-")) {
                     break;
@@ -156,8 +188,21 @@ public class Othello {
             }
         }
     }
+
+    /**
+     * The setVert() method changes the player's or computer's chips based on what coordinate is given in the
+     * vertical direction. The method takes the boolean parameter to see if the method needs to be run for the player
+     * or computer, then takes the coordinates and traverses the board matrix up and down from the coordinates,
+     * changing the pieces to the player's or computer's pieces.
+     *
+     * @param player boolean that determines if the method should be run for the player of the computer
+     * @param row row coordinate in the board matrix
+     * @param column column coordinate in the board matrix
+     */
     public void setVert(boolean player, int row, int column){
+        //if it is the player's turn
         if(player) {
+            //traverse up from the coordinates and change each piece to X until the end off your pieces or board
             for (int i = row+1; i < board.length; i++) {
                 if (board[i][column].equals("-")) {
                     break;
@@ -168,6 +213,7 @@ public class Othello {
                     break;
                 }
             }
+            //traverse down from the coordinates and change each piece to X until the end of your pieces or board
             for (int i = row-1; i > 0; i--){
                 if (board[i][column].equals("-")) {
                     break;
@@ -178,7 +224,9 @@ public class Othello {
                     break;
                 }
             }
+        //if it is the computer's turn
         }else{
+            //traverse up from the coordinates and change each piece to O until the end off the CPU's pieces or board
             for (int i = row+1; i < board.length; i++) {
                 if (board[i][column].equals("-")) {
                     break;
@@ -189,6 +237,7 @@ public class Othello {
                     break;
                 }
             }
+            //traverse down from the coordinates and change each piece to O until the end off the CPU's pieces or board
             for (int i = column-1; i > 0; i--){
                 if (board[i][column].equals("-")) {
                     break;
@@ -201,7 +250,19 @@ public class Othello {
             }
         }
     }
+
+    /**
+     * The setDiag() method changes the player's or computer's chips based on what coordinate is given in the
+     * diagonal directions. The method takes the boolean parameter to see if the method needs to be run for the player
+     * or computer, then takes the coordinates and traverses the board matrix in all four diagonal directions from the
+     * coordinates, changing the pieces to the player's or computer's pieces.
+     *
+     * @param player boolean that determines if the method should be run for the player of the computer
+     * @param row row coordinate in the board matrix
+     * @param column column coordinate in the board matrix
+     */
     public void setDiag(boolean player, int row, int column){
+        //if it is the player's turn
         if(player){
             int x = column + 1;
             int y = row - 1;
@@ -275,6 +336,7 @@ public class Othello {
                 x--;
                 y--;
             }
+        //if it is the computer's turn
         }else{
             int x = column + 1;
             int y = row - 1;
