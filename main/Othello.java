@@ -1,29 +1,46 @@
 package main;
+
+//import Java ArrayList and Math functions
 import java.util.ArrayList;
 import java.lang.Math;
 
-public class Othello {      //Test.
+/**
+ * The Othello class serves as the foundation of a game of Othello. When a client connects
+ * to the server, a new thread launches an instance of Othello and the server and client
+ * can interact with each other to play the game.
+ */
+public class Othello {
     private String name;
     private String pass;
     private String[][] board;
     private int[] grid;
 
+    /**
+     * Othello constructor with name and password attributes; Initializes a playable board
+     * as a String matrix
+     *
+     * @param name username of the person
+     * @param pass password for the game
+     */
     public Othello(String name, String pass) {
         this.name = name;
         this.pass = pass;
-        board = new String[9][9];
-        for (int i = 1; i < board.length; i++) {
+        board = new String[9][9]; //declares a String matrix of size 9x9
+        for (int i = 1; i < board.length; i++) { //traverses the String matrix and adds a boarder
             for (int j = 1; j < board[i].length; j++) {
                 board[i][j] = "-";
             }
         }
         grid = new int[]{1, 2, 3, 4, 5, 6, 7, 8};
+        //adds the top row of number labels
         for (int i = 1; i < board.length; i++) {
             board[i][0] = Integer.toString(grid[i - 1]);
         }
+        //adds the left side of number labels
         for (int i = 1; i < board[0].length; i++) {
             board[0][i] = Integer.toString(grid[i - 1]);
         }
+        //changes the center four squares to two player chips and two computer chips
         board[0][0] = " ";
         board[4][4] = "O";
         board[5][5] = "O";
@@ -31,6 +48,9 @@ public class Othello {      //Test.
         board[5][4] = "X";
     }
 
+    /**
+     * The print board method traverse the existing board and prints out the matrix
+     */
     public void printBoard() {
         for (int i = 0; i < board.length; i++) {
             System.out.println();
@@ -40,6 +60,16 @@ public class Othello {      //Test.
         }
     }
 
+    /**
+     * The placePiecePlayer method "places a piece down" for the player where the specified coordinates are on the
+     * board. The mmethod takes the coordinates corresponding to a spot on the matrix and changes that piece. Per
+     * Othello rules, the method also changes pieces based on what connects your piece to some of your existing ones on
+     * the board, therefore taking some pieces away from the computer. Lastly, the method prints the changed
+     * Othello board.
+     *
+     * @param row row coordinate in the board matrix
+     * @param column column coordinate in the board matrix
+     */
     public void placePiecePlayer(int row, int column) {
         board[row][column] = "X";
         setHoriz(true, row, column);
@@ -47,6 +77,13 @@ public class Othello {      //Test.
         setDiag(true, row, column);
     printBoard();
     }
+
+    /**
+     * In the placePieceCPU() method, there is a call of getBestMove(), which returns coordinates for the best move the
+     * CPU can take to an integer array. The piece at those coordinates is changed and then, per Othello rules, the
+     * method also changes pieces based on what connects to your piece to some of the computer's existing pieces,
+     * taking those pieces away from the player. Lastly, the placePieceCPU() method prints the changed Othello board.
+     */
     public void placePieceCPU(){
         int[] bestMove = getBestMove(false);
         int row = bestMove[0];
@@ -56,11 +93,26 @@ public class Othello {      //Test.
         setVert(false, row, column);
         setDiag(false, row, column);
     }
+
+    /**
+     * The placePiece() method changes the board, at specified coordinates, to the computer's piece.
+     *
+     * @param row row coordinate in the board matrix
+     * @param column column coordinate in the board matrix
+     */
     public void placePiece(int row, int column){
         board[row][column] = "O";
     }
+
+    /**
+     * The setHoriz() method 
+     *
+     * @param player
+     * @param row
+     * @param column
+     */
     public void setHoriz(boolean player, int row, int column){
-        if(player) {
+        if(player){
             for (int i = column+1; i < board.length; i++) {
                 if (board[row][i].equals("-")) {
                     break;
