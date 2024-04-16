@@ -71,15 +71,39 @@ public class Othello {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] == "O"){
-                    x[1]++;
+                    x[0]++;
                 }else if(board[i][j] == "X"){
-                    x[2]++;
+                    x[1]++;
                 }
             }
         }
         return x;
     }
 
+    public int checkWin(){
+        int[] x = countPieces();
+        ArrayList<int[]> playerMoves = allLegalMoves(true);
+        ArrayList<int[]> CPUMoves = allLegalMoves(false);
+        if(x[0] + x[1] >= 64){
+            if(x[0] > x[1]){
+                return 1;           //Player win.
+            }else if(x[0] < x[1]){
+                return 2;           //CPU win.
+            }else{
+                return 3;           //Draw.
+            }
+        }else if(playerMoves.isEmpty() && CPUMoves.isEmpty()){
+            if(x[0] > x[1]){
+                return 1;           //Player win.
+            }else if(x[0] < x[1]){
+                return 2;           //CPU win.
+            }else{
+                return 3;           //Draw.
+            }
+        }
+
+        return -1; //No win yet.
+    }
     /**
      * The placePiecePlayer method "places a piece down" for the player where the specified coordinates are on the
      * board. The mmethod takes the coordinates corresponding to a spot on the matrix and changes that piece. Per
