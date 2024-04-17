@@ -107,7 +107,7 @@ public class Othello {
      * taking those pieces away from the player. Lastly, the placePieceCPU() method prints the changed Othello board.
      */
     public void placePieceCPU(){
-        int[] bestMove = getBestMove(false);
+        int[] bestMove = getBestMoveCPU(false);
         int row = bestMove[0];
         int column = bestMove[1];
         board[row][column] = "O";
@@ -413,12 +413,24 @@ public class Othello {
         }
     }
 
+    /**
+     * The allLegalMoves() method traverses the board for the specified player and finds the coordinates where a legal
+     * move would be. The method then adds the set of coordinates, which is in an integer array format, to an ArrayList
+     * of integer arrays. Lastly, the method returns the list of coordinates.
+     *
+     * @param player boolean that determines if the method should be run for the player of the computer
+     * @return an ArrayList of integer arrays that will represent each set of coordinates for a legal move
+     */
     public ArrayList<int[]> allLegalMoves(boolean player)
     {
+        //declares an ArrayList of the type integer array
         ArrayList<int[]> list = new ArrayList<int[]>();
+        //declare an empty integer array
         int[] x;
+        //if it is the player's turn
         if (player)
         {
+            //traverses the board finding coordinates that would work for the player and adding them to the list
             for (int i = 0; i < board.length; i++)
             {
                 for (int j = 0; j < board[i].length; j++)
@@ -431,8 +443,10 @@ public class Othello {
                 }
             }
         }
+        //if it is the computer's turn
         else
         {
+            //traverses the board finding coordinates that would work for the computer and adding them to the list
             for (int i = 0; i < board.length; i++)
             {
                 for (int j = 0; j < board[i].length; j++)
@@ -447,6 +461,19 @@ public class Othello {
         }
         return list;
     }
+
+    /**
+     * The isLegal() method determines if the move, at the specified coordinates and for the specified player, is legal
+     * to play. It utilizes the getLegal() method and checks to see whether there is a legal move at the coordinates.
+     * If getLegal() returns an integer array with -1's, which is one outcome based on rules of the game, then the
+     * move is not legal and the method returns false. The method returns true if there is any other coordinates stored
+     * within the returned getLegal() array.
+     *
+     * @param player boolean that determines if the method should be run for the player of the computer
+     * @param row row coordinate in the board matrix
+     * @param column column coordinate in the board matrix
+     * @return boolean that determines if a move is legal or not
+     */
     public boolean isLegal(boolean player, int row, int column)
     {
         boolean con = false;
@@ -457,29 +484,42 @@ public class Othello {
                break;
            }
         }
-
         return con;
     }
 
+    /**
+     * The getLegal() method determines a set of coordinates in an integer array that represent the choices of legal
+     * moves that the specified player can choose from. The method takes on the specified coordinates and calculates
+     * all the moves the player or computer can make at the time it is called during someone's turn.
+     *
+     * @param player boolean that determines if the method should be run for the player of the computer
+     * @param row row coordinate in the board matrix
+     * @param column column coordinate in the board matrix
+     * @return integer array that represents all  legal moves that the player would be able to choose from
+     */
     public int[][] getLegal(boolean player, int row, int column){ //Makes a 2D-array for the location of legal moves left, up-left, up, up-right, right, down-right, down, down-left
         int[][] result = new int[8][2];
+        //if it is the player's turn
         if(player) {
-            //left
+            //checks to the left of the given coordinates to see if there is an open space or an enemy space
             for (int i = column - 1; i > 0; i--) {
+                //if the space is empty, the space at these coordinates is illegal
                 if (board[row][i].equals("-")) {
                     result[0][0] = -1;
                     result[0][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal
                 } else if (board[row][i].equals("X")) {
                     result[0][0] = row;
                     result[0][1] = i;
                     break;
                 } else {
+                //the space is illegal
                     result[0][0] = -1;
                     result[0][1] = -1;
                 }
             }
-            //up-left
+            //checks
             int x = column - 1;
             int y = row - 1;
             while(x > 0 && y > 0) {
@@ -600,6 +640,7 @@ public class Othello {
                 x--;
                 y++;
             }
+        //if it is the computer's turn
         }else {
             for (int i = column - 1; i > 0; i--) {
                 if (board[row][i].equals("-")) {
@@ -740,15 +781,28 @@ public class Othello {
         return result;
     }
 
-    public int[] getBestMove(boolean player){
+    /**
+     * The getBestMove() method, utilized in the placePieceCPU() method, creates an integer array of the coordinate of
+     * the best move that the computer can make in order to obtain the most pieces on this the turn.
+     *
+     * @param player boolean that determines if the method should be run for the player of the computer
+     * @return integer array representing coordinate of the best move the computer can make
+     */
+    public int[] getBestMoveCPU(boolean player){
+        //integer array for the coordinate, integers for counter sum and comparing sum
         int[] move = new int[2];
         int sum = 0;
         int maxsum = 0;
-        ArrayList<int[]> moveList;
-        moveList = allLegalMoves(player);
+        //an ArrayList for the legal moves of the player, an integer matrix for the list of coordinates of legal moves
+        ArrayList<int[]> moveList = allLegalMoves(player); //will always be called as false in this case
         int[][] legalList;
+        //an integer array for any coordinates to compare to
         int[] coordinates = new int[2];
+
+        //traverses the ArrayList of the computer's legal moves to find the best one, comparing each one's total pieces
+        //changed to find the greatest change
         for(int i = 0; i < moveList.size(); i++){
+            //coordinates becomes the set at index i; the list becomes the best moves that the 
             coordinates = moveList.get(i);
             legalList = getLegal(player, coordinates[0], coordinates[1]);
             for(int j = 0; j < legalList.length; j++){
@@ -760,17 +814,31 @@ public class Othello {
                     }
                 }
             }
+            //if the
             if(sum > maxsum){
                 maxsum = sum;
                 move = moveList.get(i);
             }
             sum = 0;
         }
+        //returns the best coordinate for the computer to play
         return move;
     }
+
+    /**
+     * The getNames() method returns the username of the game.
+     *
+     * @return the  username of the game
+     */
     public String getName(){
         return name;
     }
+
+    /**
+     * THe getPass() method returns the password of the game.
+     *
+     * @return the password of the game
+     */
     public String getPass(){
         return pass;
     }
