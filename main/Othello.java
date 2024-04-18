@@ -40,10 +40,10 @@ public class Othello {
         }
         //changes the center four squares to two player chips and two computer chips
         board[0][0] = " ";
-        board[4][4] = "O"; //player's piece
-        board[5][5] = "O";
-        board[4][5] = "X"; //computer's piece
-        board[5][4] = "X";
+        board[4][4] = "X"; //player's piece
+        board[5][5] = "X";
+        board[4][5] = "O"; //computer's piece
+        board[5][4] = "O";
     }
 
     /**
@@ -124,7 +124,7 @@ public class Othello {
         setHoriz(true, row, column);
         setVert(true, row, column);
         setDiag(true, row, column);
-        
+
     }
 
     /**
