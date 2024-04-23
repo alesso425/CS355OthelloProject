@@ -31,13 +31,9 @@ class ClientHandler extends Thread {
     }
 
     @Override
-<<<<<<< Updated upstream
-    public void run()
-    {
-=======
     public void run() {
 
->>>>>>> Stashed changes
+
         String userName;
         String userPass;
         try {
@@ -55,24 +51,16 @@ class ClientHandler extends Thread {
 				if (clientResp.equals("yes"))
 				{
 					System.out.println("Client said yes."); //For Troubleshooting. Will comment after Othello
-<<<<<<< Updated upstream
+
 					//Create a new game (new Othello Object) prompt player for  name and personal pass.
                     out.write("[SERVER] >>> Enter desired username.  ");
-=======
-
                     out.write("[SERVER] >>> Enter desired username. ");
->>>>>>> Stashed changes
                     userName = in.readLine();
                     out.write("[SERVER] >>> Enter desired password.  ");
                     userPass = in.readLine();
                     out.write("[SERVER] >>> GENERATING GAME... ");
                     Othello newgame = new Othello(userName, userPass);
-<<<<<<< Updated upstream
 
-
-
-=======
->>>>>>> Stashed changes
 				}
 				else 
 				{
