@@ -71,7 +71,9 @@ public class Othello {
      */
     public int[] countPieces()
     {
+        //integer array for the two scores
         int[] x = new int[2];
+        //traverses the entire board counting both the player's and computer's pieces, adding them to the corresponding scores
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] == "O"){
@@ -81,33 +83,54 @@ public class Othello {
                 }
             }
         }
+        //return the integer array of the scores
         return x;
     }
 
+    /**
+     * The checkWin() method creates two arrays of all possible legal moves left for both the player and the computer,
+     * then checking to see if the game has finished. If the game has finished, meaning the board if filled or no player
+     * can make a legal move, then the method calculates the winner by comparing the two score values in the integer
+     * array with store values from countPieces().
+     *
+     * @return an integer corresponding to a win, loss, or draw (or a warning integer to establish that the game needs
+     * to be finished)
+     */
     public int checkWin(){
+        //binds a call of countPieces() to an integer array
         int[] x = countPieces();
+        //binds each a call of allLegalMoves for the player and computer to determine if there are any moves to play to
+        //an ArrayList, playerMoves and CPUMoves respectively
         ArrayList<int[]> playerMoves = allLegalMoves(true);
         ArrayList<int[]> CPUMoves = allLegalMoves(false);
+        //if the total number of pieces played by both players equate to the total number of spaces on the board
         if(x[0] + x[1] >= 64){
+            //if the player has more pieces than the computer, the player wins
             if(x[0] > x[1]){
-                return 1;           //Player win.
+                return 1;
             }else if(x[0] < x[1]){
-                return 2;           //CPU win.
+            //if the computer has more pieces than the player, the computer wins
+                return 2;
+            //all other cases equate to a draw
             }else{
-                return 3;           //Draw.
+                return 3;
             }
         }else if(playerMoves.isEmpty() && CPUMoves.isEmpty()){
+            //if the player has more pieces than the computer, the player wins
             if(x[0] > x[1]){
                 return 1;           //Player win.
             }else if(x[0] < x[1]){
-                return 2;           //CPU win.
+            //if the computer has more pieces than the player, the computer wins
+                return 2;
+            //all other cases equate to a draw
             }else{
-                return 3;           //Draw.
+                return 3;
             }
         }
-
-        return -1; //No win yet.
+        //if the board has not been filled completely, return -1 to signify the game has to continue
+        return -1;
     }
+
     /**
      * The placePiecePlayer method "places a piece down" for the player where the specified coordinates are on the
      * board. The mmethod takes the coordinates corresponding to a spot on the matrix and changes that piece. Per
@@ -167,22 +190,30 @@ public class Othello {
     public void setHoriz(boolean player, int row, int column){
         //if it is the player's turn
         if(player){
-            //traverse to the right of the coordinates and change each piece to X until the end off your pieces or board
+            //traverses to the right changing the spaces or computer's pieces to the player's if they
+            //are in between the piece the player placed down and another one of their pieces
             for (int i = column+1; i < board.length; i++) {
+                //if the space is empty
                 if (board[row][i].equals("-")) {
                     break;
+                //if the space has the player's piece
                 } else if (board[row][i].equals("X")) {
+                    //make all spaces/pieces in between the two pieces into the player's
                     for (int j = column + 1; j < i; j++) {
                         board[row][j] = "X";
                     }
                     break;
                 }
             }
-            //traverse to the left of the coordinates and change each piece to X until the end of your pieces or board
+            //traverses to the left changing the spaces or computer's pieces to the player's if they
+            //are in between the piece the player placed down and another one of their pieces
             for (int i = column-1; i > 0; i--){
+                //if the space is empty
                 if (board[row][i].equals("-")) {
                     break;
+                //if the space has the player's piece
                 } else if (board[row][i].equals("X")) {
+                    //make all spaces/pieces in between the two pieces into the player's
                     for (int j = column - 1; j > i; j--) {
                         board[row][j] = "X";
                     }
@@ -191,22 +222,28 @@ public class Othello {
             }
         //if it is the computer's turn
         }else{
-            //traverse to the right of the coordinates and change each piece to O until the end of the CPU's pieces or board
+            //traverses to the right changing the spaces or player's pieces to the computer's if they
+            //are in between the piece the computer placed down and another one of their pieces
             for (int i = column+1; i < board.length; i++) {
+                //if the space is empty
                 if (board[row][i].equals("-")) {
                     break;
                 } else if (board[row][i].equals("O")) {
+                    //make all spaces/pieces in between the two pieces into the computer's
                     for (int j = column + 1; j < i; j++) {
                         board[row][j] = "O";
                     }
                     break;
                 }
             }
-            //traverse to the left of the coordinates and change each piece to O until the end of the CPU's pieces or board
+            //traverses to the changing the spaces or computer's pieces to the player's if they
+            //are in between the piece the computer placed down and another one of their pieces
             for (int i = column-1; i > 0; i--){
+                //if the space is empty
                 if (board[row][i].equals("-")) {
                     break;
                 } else if (board[row][i].equals("O")) {
+                    //make all spaces/pieces in between the two pieces into the computer's
                     for (int j = column - 1; j > i; j--) {
                         board[row][j] = "O";
                     }
@@ -229,22 +266,30 @@ public class Othello {
     public void setVert(boolean player, int row, int column){
         //if it is the player's turn
         if(player) {
-            //traverse up from the coordinates and change each piece to X until the end off your pieces or board
+            //traverses up the board changing the spaces or computer's pieces to the player's if they
+            //are in between the piece the player placed down and another one of their pieces
             for (int i = row+1; i < board.length; i++) {
+                //if the space is empty
                 if (board[i][column].equals("-")) {
                     break;
+                //if the space has the player's piece
                 } else if (board[i][column].equals("X")) {
+                    //make all spaces/pieces in between the two pieces into the player's
                     for (int j = row + 1; j < i; j++) {
                         board[j][column] = "X";
                     }
                     break;
                 }
             }
-            //traverse down from the coordinates and change each piece to X until the end of your pieces or board
+            //traverses down the board changing the spaces or computer's pieces to the player's if they
+            //are in between the piece the player placed down and another one of their pieces
             for (int i = row-1; i > 0; i--){
+                //if the space is empty
                 if (board[i][column].equals("-")) {
                     break;
+                //if the space has the player's piece
                 } else if (board[i][column].equals("X")) {
+                    //make all spaces/pieces in between the two pieces into the player's
                     for (int j = row - 1; j > i; j--) {
                         board[j][column] = "X";
                     }
@@ -253,11 +298,15 @@ public class Othello {
             }
         //if it is the computer's turn
         }else{
-            //traverse up from the coordinates and change each piece to O until the end off the CPU's pieces or board
+            //traverses up the board changing the spaces or player's pieces to the computer's if they
+            //are in between the piece the computer placed down and another one of their pieces
             for (int i = row+1; i < board.length; i++) {
+                //if the space is empty
                 if (board[i][column].equals("-")) {
                     break;
+                ///if the space has the computer's piece
                 } else if (board[i][column].equals("O")) {
+                    //make all spaces/pieces in between the two pieces into the computer's
                     for (int j = row + 1; j < i; j++) {
                         board[j][column] = "O";
                     }
@@ -266,9 +315,12 @@ public class Othello {
             }
             //traverse down from the coordinates and change each piece to O until the end off the CPU's pieces or board
             for (int i = column-1; i > 0; i--){
+                //if the space is empty
                 if (board[i][column].equals("-")) {
                     break;
+                //if the space has the computer's piece
                 } else if (board[i][column].equals("O")) {
+                    //make all spaces/pieces in between the two pieces into the computer's
                     for (int j = row - 1; j > i; j--) {
                         board[i][column] = "O";
                     }
@@ -291,14 +343,20 @@ public class Othello {
     public void setDiag(boolean player, int row, int column){
         //if it is the player's turn
         if(player){
+            //traverses in the upper-right direction changing the spaces or computer's pieces to the player's if they
+            //are in between the piece the player placed down and another one of their pieces
+            //set the comparing coordinates to the space to the upper-right of the given coordinates
             int x = column + 1;
             int y = row - 1;
             int x2 = column+1;
             int y2 = row-1;
-            while(x < board.length && y > 0) { //Up-Right;
+            while(x < board.length && y > 0) {
+                //if the space is empty
                 if(board[y][x].equals("-")){
                     break;
+                //if the space has the player's piece
                 }else if (board[y][x].equals("X")){
+                    //make all spaces/pieces in between the two pieces into the player's
                     while(x2 < x && y2 > y){
                         board[y2][x2] = "X";
                         x2++;
@@ -306,17 +364,24 @@ public class Othello {
                     }
                     break;
                 }
+                //increments to the next spot in the upper-right direction
                 x++;
                 y--;
             }
+            //traverses in the bottom-right direction changing the spaces or computer's pieces to the player's if they
+            //are in between the piece the player placed down and another one of their pieces
+            //set the comparing coordinates to the space to the bottom-right of the given coordinates
             x = column + 1;
             x2 = column + 1;
             y = row + 1;
             y2 = row + 1;
-            while(x < board.length && y < board.length) { //Down-Right
+            while(x < board.length && y < board.length) {
+                //if the space is empty
                 if(board[y][x].equals("-")){
                     break;
+                //if the space has the player's piece
                 }else if(board[y][x].equals("X")){
+                    //make all spaces/pieces in between the two pieces into the player's
                     while(x2 < x && y2 < y){
                         board[y2][x2] = "X";
                         x2++;
@@ -324,17 +389,24 @@ public class Othello {
                     }
                     break;
                 }
+                //increments to the next spot in the bottom-right direction
                 x++;
                 y++;
             }
+            //traverses in the bottom-left direction changing the spaces or computer's pieces to the player's if they
+            //are in between the piece the player placed down and another one of their pieces
+            //set the comparing coordinates to the space to the bottom-left of the given coordinates
             x = column - 1;
             x2 = column - 1;
             y = row + 1;
             y2 = row + 1;
-            while(x > 0 && y < board.length) { //Down-Left
+            while(x > 0 && y < board.length) {
+                //if the space is empty
                 if(board[y][x].equals("-")){
                     break;
+                //if the space has the player's piece
                 }else if(board[y][x].equals("X")){
+                    //make all spaces/pieces in between the two pieces into the player's
                     while(x2 > x && y2 < y){
                         board[y2][x2] = "X";
                         x2--;
@@ -342,17 +414,24 @@ public class Othello {
                     }
                     break;
                 }
+                //increments to the next spot in the bottom-left direction
                 x--;
                 y++;
             }
+            //traverses in the upper-left direction changing the spaces or computer's pieces to the player's if they
+            //are in between the piece the player placed down and another one of their pieces
+            //set the comparing coordinates to the space to the upper-left of the given coordinates
             x = column - 1;
             x2 = column - 1;
             y = row - 1;
             y2 = row - 1;
-            while(x > 0 && y > 0) { //Up-Left
+            while(x > 0 && y > 0) {
+                //if the space is empty
                 if (board[y][x].equals("-")){
                     break;
+                //if the space has the player's piece
                 }else if(board[y][x].equals("X")){
+                    //make all spaces/pieces in between the two pieces into the player's
                     while(x2 > x && y2 > y){
                         board[y2][x2] = "X";
                         x2--;
@@ -360,19 +439,26 @@ public class Othello {
                     }
                     break;
                 }
+                //increments to the next spot in the upper-left direction
                 x--;
                 y--;
             }
         //if it is the computer's turn
         }else{
+            //traverses in the upper-right direction changing the spaces or player's pieces to the computer's if they
+            //are in between the piece the computer placed down and another one of their pieces
+            //set the comparing coordinates to the space to the upper-right of the given coordinates
             int x = column + 1;
             int y = row - 1;
             int x2 = column+1;
             int y2 = row-1;
-            while(x < board.length && y > 0) { //Up-Right;
+            while(x < board.length && y > 0) {
+                //if the space is empty
                 if(board[y][x].equals("-")){
                     break;
+                //if the space has the computer's piece
                 }else if (board[y][x].equals("O")){
+                    //make all spaces/pieces in between the two pieces into the player's
                     while(x2 < x && y2 > y){
                         board[y2][x2] = "O";
                         x2++;
@@ -380,17 +466,24 @@ public class Othello {
                     }
                     break;
                 }
+                //increments to the next spot in the upper-right direction
                 x++;
                 y--;
             }
+            //traverses in the bottom-right direction changing the spaces or player's pieces to the computer's if they
+            //are in between the piece the computer placed down and another one of their pieces
+            //set the comparing coordinates to the space to the bottom-right of the given coordinates
             x = column + 1;
             x2 = column + 1;
             y = row + 1;
             y2 = row + 1;
-            while(x < board.length && y < board.length) { //Down-Right
+            while(x < board.length && y < board.length) {
+                //if the space is empty
                 if(board[y][x].equals("-")){
                     break;
+                //if the space has the computer's piece
                 }else if(board[y][x].equals("O")){
+                    //make all spaces/pieces in between the two pieces into the player's
                     while(x2 < x && y2 < y) {
                         board[y2][x2] = "O";
                         x2++;
@@ -398,17 +491,24 @@ public class Othello {
                     }
                     break;
                 }
+                //increments to the next spot in the bottom-right direction
                 x++;
                 y++;
             }
+            //traverses in the bottom-left direction changing the spaces or player's pieces to the computer's if they
+            //are in between the piece the computer placed down and another one of their pieces
+            //set the comparing coordinates to the space to the bottom-left of the given coordinates
             x = column - 1;
             x2 = column - 1;
             y = row + 1;
             y2 = row + 1;
-            while(x > 0 && y < board.length) { //Down-Left
+            while(x > 0 && y < board.length) {
+                //if the space is empty
                 if(board[y][x].equals("-")){
                     break;
+                //if the space has the computer's piece
                 }else if(board[y][x].equals("O")){
+                    //make all spaces/pieces in between the two pieces into the player's
                     while(x2 > x && y2 < y){
                         board[y2][x2] = "O";
                         x2--;
@@ -416,17 +516,24 @@ public class Othello {
                     }
                     break;
                 }
+                //increments to the next spot in the bottom-left direction
                 x--;
                 y++;
             }
+            //traverses in the upper-left direction changing the spaces or player's pieces to the computer's if they
+            //are in between the piece the computer placed down and another one of their pieces
+            //set the comparing coordinates to the space to the upper-left of the given coordinates
             x = column - 1;
             x2 = column - 1;
             y = row - 1;
             y2 = row - 1;
-            while(x > 0 && y > 0) { //Up-Left
+            while(x > 0 && y > 0) {
+                //if the space is empty
                 if (board[y][x].equals("-")){
                     break;
+                //if the space has the computer's piece
                 }else if(board[y][x].equals("O")){
+                    //make all spaces/pieces in between the two pieces into the player's
                     while(x2 > x && y2 > y){
                         board[y2][x2] = "O";
                         x2--;
@@ -434,6 +541,7 @@ public class Othello {
                     }
                     break;
                 }
+                //increments to the next spot in the upper-left direction
                 x--;
                 y--;
             }
@@ -505,6 +613,7 @@ public class Othello {
     {
         boolean con = false;
         int[][] arr = getLegal(player, row, column);
+        //checks to see if there is at least one legal move in the array
         for(int i = 0; i < arr.length; i++){
            if(arr[i][0] > 0){
                con = true;
@@ -522,9 +631,9 @@ public class Othello {
      * @param player boolean that determines if the method should be run for the player of the computer
      * @param row row coordinate in the board matrix
      * @param column column coordinate in the board matrix
-     * @return integer array that represents all  legal moves that the player would be able to choose from
+     * @return integer matrix that represents all legal moves that the player would be able to choose from
      */
-    public int[][] getLegal(boolean player, int row, int column){ //Makes a 2D-array for the location of legal moves left, up-left, up, up-right, right, down-right, down, down-left
+    public int[][] getLegal(boolean player, int row, int column){
         int[][] result = new int[8][2];
         //if it is the player's turn
         if(player) {
@@ -534,277 +643,340 @@ public class Othello {
                 if (board[row][i].equals("-")) {
                     result[0][0] = -1;
                     result[0][1] = -1;
-                    break;
-                //if the space is X, the space at these coordinates is legal
+                    break; //quit
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 } else if (board[row][i].equals("X")) {
                     result[0][0] = row;
                     result[0][1] = i;
-                    break;
+                    break; //quit
+                //the space is illegal (catch all)
                 } else {
-                //the space is illegal
                     result[0][0] = -1;
                     result[0][1] = -1;
                 }
             }
-            //checks
+            //checks to the top-left of the given coordinates to see if there is an open or an enemy space
+            //iterate one up and one left
             int x = column - 1;
             int y = row - 1;
             while(x > 0 && y > 0) {
+                //if the space is empty, the space at these coordinates is illegal
                 if (board[y][x].equals("-")){
                     result[1][0] = -1;
                     result[1][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 }else if(board[y][x].equals("X")){
                     result[1][0] = y;
                     result[1][1] = x;
                     break;
+                //the space is illegal (catch all)
                 }else{
                     result[1][0] = -1;
                     result[1][1] = -1;
                 }
+                //iterate one up and one left
                 x--;
                 y--;
             }
-            //up
+            //checks up above the given coordinates to see if there is an open space or an enemy space
             for (int i = row - 1; i > 0; i--) {
+                //if the space is empty, the space at these coordinates is illegal
                 if (board[i][column].equals("-")) {
                     result[2][0] = -1;
                     result[2][1] = -1;
-                    break;
+                    break; //quit
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 } else if (board[i][column].equals("X")) {
                     result[2][0] = i;
                     result[2][1] = column;
-                    break;
+                    break; //quit
+                //the space is illegal (catch all)
                 } else {
                     result[2][0] = -1;
                     result[2][1] = -1;
                 }
             }
-            //up-right
+            //checks to the top-right of the given coordinates to see if there is an open or an enemy space
+            //iterate one up and one right
             x = column + 1;
             y = row - 1;
             while(x < board.length && y > 0) { //Up-Right;
+                //if the space is empty, the space at these coordinates is illegal
                 if(board[y][x].equals("-")){
                     result[3][0] = -1;
                     result[3][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 }else if (board[y][x].equals("X")){
                     result[3][0] = y;
                     result[3][1] = x;
                     break;
+                //the space is illegal (catch all)
                 }else{
                     result[3][0] = -1;
                     result[3][1] = -1;
                 }
+                //iterate one up and one right
                 x++;
                 y--;
             }
-            //right
+            //checks to the right of the given coordinates to see if there is an open space or an enemy space
             for (int i = column + 1; i < board.length; i++) {
+                //if the space is empty, the space at these coordinates is illegal
                 if (board[row][i].equals("-")) {
                     result[4][0] = -1;
                     result[4][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 } else if (board[row][i].equals("X")) {
                     result[4][0] = row;
                     result[4][1] = i;
                     break;
+                //the space is illegal (catch all)
                 } else {
                     result[4][0] = -1;
                     result[4][1] = -1;
                 }
             }
-            //down-right
+            //checks to the bottom-right of the given coordinates to see if there is an open or an enemy space
+            //iterate one down and one right
             x = column + 1;
             y = row + 1;
-            while(x < board.length && y < board.length) { //Down-Right
+            while(x < board.length && y < board.length) {
+                //if the space is empty, the space at these coordinates is illegal
                 if(board[y][x].equals("-")){
                     result[5][0] = -1;
                     result[5][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 }else if(board[y][x].equals("X")){
                     result[5][0] = y;
                     result[5][1] = x;
                     break;
+                //the space is illegal (catch all)
                 }else{
                     result[5][0] = -1;
                     result[5][1] = -1;
                 }
+                //iterate one down and one right
                 x++;
                 y++;
             }
-            //down
+            //checks below the given coordinates to see if there is an open space or an enemy space
             for (int i = row + 1; i < board[row].length; i++) {
+                //if the space is empty, the space at these coordinates is illegal
                 if (board[i][column].equals("-")) {
                     result[6][0] = -1;
                     result[6][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 } else if (board[i][column].equals("X")) {
                     result[6][0] = i;
                     result[6][1] = column;
                     break;
+                //the space is illegal (catch all)
                 } else {
                     result[6][0] = -1;
                     result[6][1] = -1;
                 }
             }
-            //down-left
+            //checks to the bottom-left of the given coordinates to see if there is an open or an enemy space
+            //iterate one down and one left
             x = column - 1;
             y = row + 1;
-            while(x > 0 && y < board.length) { //Down-Left
+            while(x > 0 && y < board.length) {
+                //if the space is empty, the space at these coordinates is illegal
                 if(board[y][x].equals("-")){
                     result[7][0] = -1;
                     result[7][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 }else if(board[y][x].equals("X")){
                     result[7][0] = y;
                     result[7][1] = x;
                     break;
+                //the space is illegal (catch all)
                 }else{
                     result[7][0] = -1;
                     result[7][1] = -1;
                 }
+                //iterate one down and one left
                 x--;
                 y++;
             }
         //if it is the computer's turn
         }else {
+            //checks to the left of the given coordinates to see if there is an open space or an enemy space
             for (int i = column - 1; i > 0; i--) {
+                //if the space is empty, the space at these coordinates is illegal
                 if (board[row][i].equals("-")) {
                     result[0][0] = -1;
                     result[0][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 } else if (board[row][i].equals("O")) {
                     result[0][0] = row;
                     result[0][1] = i;
                     break;
+                //the space is illegal (catch all)
                 } else {
                     result[0][0] = -1;
                     result[0][1] = -1;
                 }
             }
-            //up-left
+            //checks to the top-left of the given coordinates to see if there is an open or an enemy space
+            //iterate one up and one left
             int x = column - 1;
             int y = row - 1;
             while (x > 0 && y > 0) {
+                //if the space is empty, the space at these coordinates is illegal
                 if (board[y][x].equals("-")) {
                     result[1][0] = -1;
                     result[1][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 } else if (board[y][x].equals("O")) {
                     result[1][0] = y;
                     result[1][1] = x;
                     break;
                 } else {
+                //the space is illegal (catch all)
                     result[1][0] = -1;
                     result[1][1] = -1;
                 }
+                //iterate one up and one left
                 x--;
                 y--;
             }
-            //up
+            //checks up above the given coordinates to see if there is an open space or an enemy space
             for (int i = row - 1; i > 0; i--) {
+                //if the space is empty, the space at these coordinates is illegal
                 if (board[i][column].equals("-")) {
                     result[2][0] = -1;
                     result[2][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 } else if (board[i][column].equals("O")) {
                     result[2][0] = i;
                     result[2][1] = column;
                     break;
+                //the space is illegal (catch all)
                 } else {
                     result[2][0] = -1;
                     result[2][1] = -1;
                 }
             }
-            //up-right
+            //checks to the top-right of the given coordinates to see if there is an open or an enemy space
+            //iterate one up and one right
             x = column + 1;
             y = row - 1;
-            while (x < board.length && y > 0) { //Up-Right;
+            while (x < board.length && y > 0) {
+                //if the space is empty, the space at these coordinates is illegal
                 if (board[y][x].equals("-")) {
                     result[3][0] = -1;
                     result[3][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 } else if (board[y][x].equals("O")) {
                     result[3][0] = y;
                     result[3][1] = x;
                     break;
+                //the space is illegal (catch all)
                 } else {
                     result[3][0] = -1;
                     result[3][1] = -1;
                 }
+                //iterate one up and one right
                 x++;
                 y--;
             }
-            //right
+            //checks to the right of the given coordinates to see if there is an open space or an enemy space
             for (int i = column + 1; i < board.length; i++) {
+                //if the space is empty, the space at these coordinates is illegal
                 if (board[row][i].equals("-")) {
                     result[4][0] = -1;
                     result[4][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 } else if (board[row][i].equals("O")) {
                     result[4][0] = row;
                     result[4][1] = i;
                     break;
+                //the space is illegal (catch all)
                 } else {
                     result[4][0] = -1;
                     result[4][1] = -1;
                 }
             }
-            //down-right
+            //checks to the bottom-right of the given coordinates to see if there is an open or an enemy space
+            //iterate one down and one right
             x = column + 1;
             y = row + 1;
-            while (x < board.length && y < board.length) { //Down-Right
+            while (x < board.length && y < board.length) {
+                //if the space is empty, the space at these coordinates is illegal
                 if (board[y][x].equals("-")) {
                     result[5][0] = -1;
                     result[5][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 } else if (board[y][x].equals("O")) {
                     result[5][0] = y;
                     result[5][1] = x;
                     break;
+                //the space is illegal (catch all)
                 } else {
                     result[5][0] = -1;
                     result[5][1] = -1;
                 }
+                //iterate one down and one right
                 x++;
                 y++;
             }
-            //down
+            //checks below the given coordinates to see if there is an open space or an enemy space
             for (int i = row + 1; i < board[row].length; i++) {
+                //if the space is empty, the space at these coordinates is illegal
                 if (board[i][column].equals("-")) {
                     result[6][0] = -1;
                     result[6][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 } else if (board[i][column].equals("O")) {
                     result[6][0] = i;
                     result[6][1] = column;
                     break;
+                //the space is illegal (catch all)
                 } else {
                     result[6][0] = -1;
                     result[6][1] = -1;
                 }
             }
-            //down-left
+            //checks to the bottom-left of the given coordinates to see if there is an open or an enemy space
+            //iterate one down and one left
             x = column - 1;
             y = row + 1;
-            while (x > 0 && y < board.length) { //Down-Left
+            while (x > 0 && y < board.length) {
+                //if the space is empty, the space at these coordinates is illegal
                 if (board[y][x].equals("-")) {
                     result[7][0] = -1;
                     result[7][1] = -1;
                     break;
+                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
                 } else if (board[y][x].equals("O")) {
                     result[7][0] = y;
                     result[7][1] = x;
                     break;
+                //the space is illegal (catch all)
                 } else {
                     result[7][0] = -1;
                     result[7][1] = -1;
                 }
+                //iterate one down and one left
                 x--;
                 y++;
             }
         }
+        //return the resulting array matrix of coordinates
         return result;
     }
 
@@ -829,7 +1001,7 @@ public class Othello {
         //traverses the ArrayList of the computer's legal moves to find the best one, comparing each one's total pieces
         //changed to find the greatest change
         for(int i = 0; i < moveList.size(); i++){
-            //coordinates becomes the set at index i; the list becomes the best moves that the 
+            //coordinates becomes the set at index i; the list becomes all moves that the computer is allowed to play
             coordinates = moveList.get(i);
             legalList = getLegal(player, coordinates[0], coordinates[1]);
             for(int j = 0; j < legalList.length; j++){
@@ -841,7 +1013,8 @@ public class Othello {
                     }
                 }
             }
-            //if the
+            //if the new is greater than the previous maximum sum, then the new sum is the highest and the corresponding
+            //move is the best move that the computer can make
             if(sum > maxsum){
                 maxsum = sum;
                 move = moveList.get(i);
@@ -855,7 +1028,7 @@ public class Othello {
     /**
      * The getNames() method returns the username of the game.
      *
-     * @return the  username of the game
+     * @return the username of the game
      */
     public String getName(){
         return name;
