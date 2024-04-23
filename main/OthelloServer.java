@@ -1,5 +1,5 @@
 package main;
-
+import java.util.Hashtable;
 import java.io.*;
 import java.net.*;
 
@@ -62,6 +62,7 @@ class ClientHandler extends Thread {
 				}
 				else 
 				{
+
 					//Prompt player for existing user name and password to resume game.
 						//If input name and password is invalid, throw an exception to handle.
 				
@@ -72,6 +73,8 @@ class ClientHandler extends Thread {
 			
 			
            //Save Game logic
+
+
 
 		   
 			
@@ -88,5 +91,37 @@ class ClientHandler extends Thread {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    public static void saveGame(Hashtable <String, Othello> hT, String fileName)
+    {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName)))
+        {
+            oos.writeObject(hT);
+            System.out.println("[SERVER] >>> Hashtable has been serialized to " + fileName + ".");
+
+
+
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Hashtable <String, Othello>  loadGame(String fileName)
+    {
+        Hashtable <String, Othello> hT = null;
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName)))
+        {
+            hT = (Hashtable<String, Othello>) ois.readObject();
+
+        }
+
+         catch (ClassNotFoundException  | IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        return hT;
     }
 }
