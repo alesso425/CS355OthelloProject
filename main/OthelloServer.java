@@ -39,13 +39,12 @@ class ClientHandler extends Thread {
         try {
 			
 			//Prompt if player is new, If so, ask for new name and pass. If not, ask for saved name and pass. 
-			
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientResp = null;
 
             out.write("[SERVER] >>> Do you want to generate a new game?    Yes or No? ");
-			String clientResp = null;
-
 			while (String.valueOf(in.readLine()) != null)
 			{
 				if (clientResp.equals("yes"))
