@@ -15,6 +15,7 @@ public class OthelloClient {
 
             while (String.valueOf(in.readLine()) != null)
             {
+                System.out.println(in.readLine());
 
             }
 
