@@ -3,6 +3,7 @@ package main;
 //import Java's input/output and Java's network functions
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
@@ -59,6 +60,8 @@ class ClientHandler extends Thread {
     {
         String userName;
         String userPass;
+        Othello game = null;
+        ArrayList <int[]> moveList;
         try {
 			
 			//Prompt if player is new, If so, ask for new name and pass. If not, ask for saved name and pass. 
@@ -69,9 +72,7 @@ class ClientHandler extends Thread {
             out.write("[SERVER] >>> Do you want to generate a new game?    Yes or No? ");
 			String clientResp = null;
 
-			while (String.valueOf(in.readLine()) != null)
-			{
-				if (clientResp.equals("yes"))
+            if (clientResp.equalsIgnoreCase("yes"))
 				{
 					System.out.println("Client said yes."); //For Troubleshooting. Will comment after Othello
 					//Create a new game (new Othello Object) prompt player for  name and personal pass.
@@ -80,23 +81,75 @@ class ClientHandler extends Thread {
                     out.write("[SERVER] >>> Enter desired password.  ");
                     userPass = in.readLine();
                     out.write("[SERVER] >>> GENERATING GAME... ");
-                    Othello newgame = new Othello(userName, userPass);
+                    game = new Othello(userName, userPass);
 
 
 
 				}
+            //Prompt player for existing username and password to resume game.
+            //If input name and password is invalid, throw an exception to handle.
 				else 
 				{
-					//Prompt player for existing username and password to resume game.
-						//If input name and password is invalid, throw an exception to handle.
-				
-				
+                    out.write("[SERVER] >>> Enter desired username.  ");
+                    userName = in.readLine();
+                    out.write("[SERVER] >>> Enter desired password.  ");
+                    userPass = in.readLine();
+                    Hashtable <String, Othello> hT = loadGame(userName+userPass);
+                    game = hT.get(userName+userPass);
+                    out.write("[SERVER] >>> Game retrieved. ");
+
 				}
-			}
+                out.write(game.printBoard());
+                while(true)
+                {
+                    moveList = game.allLegalMoves(true);
+                    int[] showyamoves = new int[2];
+                    String movesya = "";
+                    for(int i = 0; i < moveList.size(); i++)
+                    {
+                        showyamoves = moveList.get(i);
+                        movesya += "["+showyamoves[0]+ "," + showyamoves[1]+"]"+" , ";
+                    }
+
+                    out.write("[SERVER] >>> LEGAL MOVES: " + movesya + "\nPlease enter row: ");
+                    int row = Integer.parseInt(in.readLine());
+                    out.write("Please enter column: ");
+                    int col = Integer.parseInt(in.readLine());
+                    game.placePiecePlayer(row, col);
+                    out.write(game.printBoard());
+                    game.placePieceCPU();
+                    out.write(game.printBoard());
+
+                    int gameState = game.checkWin();
+                    if (gameState == 1)
+                    {
+                        out.write("[PLAYER WINS, YIPPEE!, GET REKT BOT. ]");
+                        break;
+                    }
+                    else if (gameState == 2)
+                    {
+                        out.write("[CPU WINS, YOU ARE ACTUALLY BAD, LIKE DON'T EVEN SAVE AGAIN. /exit now. ]");
+                        break;
+                    } else if (gameState == 3)
+                    {
+                        out.write("[DRAW. EVERYONE LOSES, YA DON'T GOT IT, HOW DOES AI EVEN LOSE, LIKE WHAT????]");
+                        break;
+                    }
+                    out.write("[SERVER] >>> Do you want to save this board and quit? ");
+                    String quitGameQuery = in.readLine();
+                    if (quitGameQuery.equalsIgnoreCase("yes"))
+                    {
+                        Hashtable<String, Othello> hT = new Hashtable<String, Othello>();
+                        hT.put(userName + userPass, game);
+                        saveGame(hT, userName+userPass);
+                        break;
+                    }
+                }
+
 
 			
 			
-           //Save Game logic
+
 
 		   
 			
