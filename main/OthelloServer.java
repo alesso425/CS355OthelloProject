@@ -3,6 +3,7 @@ package main;
 //import Java's input/output and Java's network functions
 import java.io.*;
 import java.net.*;
+import java.util.Hashtable;
 
 /**
  * OthelloServer functions as a server that host a game of Othello. The server functions out of port
@@ -65,7 +66,6 @@ class ClientHandler extends Thread {
             //
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
             out.write("[SERVER] >>> Do you want to generate a new game?    Yes or No? ");
 			String clientResp = null;
 
@@ -113,5 +113,40 @@ class ClientHandler extends Thread {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+
+
+    }
+
+    
+    public static void saveGame(Hashtable <String, Othello> hT, String fileName)
+    {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName)))
+        {
+            oos.writeObject(hT);
+            System.out.println("[SERVER] >>> Hashtable has been serialized to " + fileName + ".");
+
+
+
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Hashtable <String, Othello>  loadGame(String fileName)
+    {
+        Hashtable <String, Othello> hT = null;
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName)))
+        {
+            hT = (Hashtable<String, Othello>) ois.readObject();
+
+        }
+
+        catch (ClassNotFoundException  | IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        return hT;
     }
 }
