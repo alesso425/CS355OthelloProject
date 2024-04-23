@@ -1,8 +1,8 @@
 package main;
 
+//import Java input/output and network functions
 import java.io.*;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 
 public class OthelloClient {
 	public static void main(String[] args) {
