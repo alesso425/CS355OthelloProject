@@ -54,7 +54,10 @@ class ClientHandler extends Thread {
      *
      */
     @Override
-    public void run() {
+    public void run()
+    {
+        String userName;
+        String userPass;
         try {
 			
 			//Prompt if player is new, If so, ask for new name and pass. If not, ask for saved name and pass. 
@@ -62,15 +65,25 @@ class ClientHandler extends Thread {
             //
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-          
-            System.out.println("[SERVER] >>> Are you new to the game?    Yes or No? ");
+
+            out.write("[SERVER] >>> Do you want to generate a new game?    Yes or No? ");
 			String clientResp = null;
+
 			while (String.valueOf(in.readLine()) != null)
 			{
 				if (clientResp.equals("yes"))
 				{
 					System.out.println("Client said yes."); //For Troubleshooting. Will comment after Othello
 					//Create a new game (new Othello Object) prompt player for  name and personal pass.
+                    out.write("[SERVER] >>> Enter desired username.  ");
+                    userName = in.readLine();
+                    out.write("[SERVER] >>> Enter desired password.  ");
+                    userPass = in.readLine();
+                    out.write("[SERVER] >>> GENERATING GAME... ");
+                    Othello newgame = new Othello(userName, userPass);
+
+
+
 				}
 				else 
 				{
