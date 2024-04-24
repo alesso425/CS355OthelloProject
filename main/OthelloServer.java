@@ -13,10 +13,10 @@ import java.util.Hashtable;
  * user.
  */
 public class OthelloServer {
-	public static void main(String[] args) {
+	public static void main(String[] args){
         try {
 			Othello[] clientGames;
-            ServerSocket serverSocket = new ServerSocket(12345); // Port number
+            ServerSocket serverSocket = new ServerSocket(9999); // Port number
             System.out.println("Game server is running...");
 
             while (true) {
@@ -142,17 +142,11 @@ class ClientHandler extends Thread {
                         Hashtable<String, Othello> hT = new Hashtable<String, Othello>();
                         hT.put(userName + userPass, game);
                         saveGame(hT, userName+userPass);
+                        out.write("[SERVER] >>> Game saved. ");
                         break;
                     }
                 }
 
-
-			
-			
-
-
-		   
-			
             // Read from/write to clientSocket's input/output streams
 			
 
