@@ -10,7 +10,8 @@ public class Test {
         test.placePiecePlayer(5,4);
         test.placePiecePlayer(3,5);
         test.placePieceCPU();
-        String str = test.printBoard();
-        System.out.println(str);
+        //String str = test.printBoard();
+        //System.out.println(str);
+        System.out.println(test.checkWin());
     }
 }

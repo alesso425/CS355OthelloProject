@@ -49,16 +49,17 @@ public class Othello {
     /**
      * The print board method traverse the existing board and prints out the matrix.
      */
-    public String printBoard() {
+    public String[] printBoard() {
         int[] pieces = countPieces();
-        String result = " ";
+        String[] result = new String[11];
         for (int i = 0; i < board.length; i++) {
-            result += ("\n");
+            result[i] = "";
             for (int j = 0; j < board[i].length; j++) {
-                result += board[i][j] + " ";
+                result[i] += board[i][j] + " ";
             }
         }
-        result += "\n" + "Number of Player Pieces: " + pieces[0] + "\n" + "Number of CPU Pieces: " + pieces[1];
+        result[9] = "Number of Player Pieces: " + pieces[0];
+        result[10] =  "Number of CPU Pieces: " + pieces[1];
         return result;
     }
 
