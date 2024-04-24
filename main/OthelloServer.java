@@ -76,14 +76,12 @@ class ClientHandler extends Thread {
 				{
 					System.out.println("Client said yes."); //For Troubleshooting. Will comment after Othello
 					//Create a new game (new Othello Object) prompt player for  name and personal pass.
-                    out.write("[SERVER] >>> Enter desired username.  ");
+                       out.write("[SERVER] >>> Enter desired username.  ");
                     userName = in.readLine();
                     out.write("[SERVER] >>> Enter desired password.  ");
                     userPass = in.readLine();
                     out.write("[SERVER] >>> GENERATING GAME... ");
                     game = new Othello(userName, userPass);
-
-
 
 				}
             //Prompt player for existing username and password to resume game.
