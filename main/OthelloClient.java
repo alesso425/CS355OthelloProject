@@ -50,11 +50,12 @@ public class OthelloClient {
                 System.out.println(in.readLine());
             }
 
-            for(int i = 0; i < 11; i++){
-                System.out.println(in.readLine());
-            }
+
             while(true)
             {
+                for(int i = 0; i < 11; i++){
+                    System.out.println(in.readLine());
+                }
                 System.out.println(in.readLine());
                 System.out.println(in.readLine());
                 clientResp = clientScan.nextLine();

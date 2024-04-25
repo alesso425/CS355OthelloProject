@@ -40,10 +40,10 @@ public class Othello {
         }
         //changes the center four squares to two player chips and two computer chips
         board[0][0] = " ";
-        board[4][4] = "X"; //player's piece
-        board[5][5] = "X";
-        board[4][5] = "O"; //computer's piece
-        board[5][4] = "O";
+        //board[4][4] = "X"; //player's piece
+        //board[5][5] = "X";
+        //board[4][5] = "O"; //computer's piece
+        //board[5][4] = "O";
     }
 
     /**
@@ -58,8 +58,8 @@ public class Othello {
                 result[i] += board[i][j] + " ";
             }
         }
-        result[9] = "Number of Player Pieces: " + pieces[0];
-        result[10] =  "Number of CPU Pieces: " + pieces[1];
+        result[9] = "Number of Player Pieces: " + pieces[1];
+        result[10] =  "Number of CPU Pieces: " + pieces[0];
         return result;
     }
 
@@ -77,9 +77,9 @@ public class Othello {
         //traverses the entire board counting both the player's and computer's pieces, adding them to the corresponding scores
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] == "O"){
+                if (board[i][j] == "O"){    //CPU
                     x[0]++;
-                }else if(board[i][j] == "X"){
+                }else if(board[i][j] == "X"){ //Player
                     x[1]++;
                 }
             }
@@ -107,9 +107,9 @@ public class Othello {
         //if the total number of pieces played by both players equate to the total number of spaces on the board
         if(x[0] + x[1] >= 64){
             //if the player has more pieces than the computer, the player wins
-            if(x[0] > x[1]){
+            if(x[0] < x[1]){
                 return 1;
-            }else if(x[0] < x[1]){
+            }else if(x[0] > x[1]){
             //if the computer has more pieces than the player, the computer wins
                 return 2;
             //all other cases equate to a draw
@@ -118,9 +118,9 @@ public class Othello {
             }
         }else if(playerMoves.isEmpty() && CPUMoves.isEmpty()){
             //if the player has more pieces than the computer, the player wins
-            if(x[0] > x[1]){
+            if(x[0] < x[1]){
                 return 1;           //Player win.
-            }else if(x[0] < x[1]){
+            }else if(x[0] > x[1]){
             //if the computer has more pieces than the player, the computer wins
                 return 2;
             //all other cases equate to a draw
@@ -158,7 +158,7 @@ public class Othello {
      * taking those pieces away from the player. Lastly, the placePieceCPU() method prints the changed Othello board.
      */
     public void placePieceCPU(){
-        int[] bestMove = getBestMoveCPU(false);
+        int[] bestMove = getBestMoveCPU();
         int row = bestMove[0];
         int column = bestMove[1];
         board[row][column] = "O";
@@ -305,7 +305,7 @@ public class Othello {
                 //if the space is empty
                 if (board[i][column].equals("-")) {
                     break;
-                ///if the space has the computer's piece
+                    //if the space has the computer's piece
                 } else if (board[i][column].equals("O")) {
                     //make all spaces/pieces in between the two pieces into the computer's
                     for (int j = row + 1; j < i; j++) {
@@ -315,15 +315,15 @@ public class Othello {
                 }
             }
             //traverse down from the coordinates and change each piece to O until the end off the CPU's pieces or board
-            for (int i = column-1; i > 0; i--){
+            for (int i = row-1; i > 0; i--){
                 //if the space is empty
                 if (board[i][column].equals("-")) {
                     break;
-                //if the space has the computer's piece
+                    //if the space has the computer's piece
                 } else if (board[i][column].equals("O")) {
                     //make all spaces/pieces in between the two pieces into the computer's
                     for (int j = row - 1; j > i; j--) {
-                        board[i][column] = "O";
+                        board[j][column] = "O";
                     }
                     break;
                 }
@@ -571,7 +571,7 @@ public class Othello {
             {
                 for (int j = 0; j < board[i].length; j++)
                 {
-                    if (!board[i][j].equals("-") && isLegal(true, i, j))
+                    if (board[i][j].equals("-") && isLegal(true, i, j))
                     {
                         x = new int[]{i, j};
                         list.add(x);
@@ -646,9 +646,23 @@ public class Othello {
                     result[0][1] = -1;
                     break; //quit
                 //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                } else if (board[row][i].equals("X")) {
-                    result[0][0] = row;
-                    result[0][1] = i;
+                } else if (board[row][i].equals("X")&&board[row][i+1].equals("O")) {
+                    int j = i+1;
+                    boolean eval = true;
+                    while(j < column) {
+                        if(!board[row][j].equals("O")){
+                            eval = false;
+                            break;
+                        }
+                        j++;
+                    }
+                    if(eval) {
+                        result[0][0] = row;
+                        result[0][1] = i;
+                    }else{
+                        result[0][0] = -1;
+                        result[0][1] = -1;
+                    }
                     break; //quit
                 //the space is illegal (catch all)
                 } else {
@@ -667,9 +681,25 @@ public class Othello {
                     result[1][1] = -1;
                     break;
                 //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                }else if(board[y][x].equals("X")){
-                    result[1][0] = y;
-                    result[1][1] = x;
+                }else if(board[y][x].equals("X")&&board[y+1][x+1].equals("O")){
+                    int i = x+1;
+                    int j = y+1;
+                    boolean eval = true;
+                    while(j < row && i < column) {
+                        if(!board[j][i].equals("O")){
+                            eval = false;
+                            break;
+                        }
+                        j++;
+                        i++;
+                    }
+                    if(eval) {
+                        result[1][0] = row;
+                        result[1][1] = i;
+                    }else{
+                        result[1][0] = -1;
+                        result[1][1] = -1;
+                    }
                     break;
                 //the space is illegal (catch all)
                 }else{
@@ -688,9 +718,23 @@ public class Othello {
                     result[2][1] = -1;
                     break; //quit
                 //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                } else if (board[i][column].equals("X")) {
-                    result[2][0] = i;
-                    result[2][1] = column;
+                } else if (board[i][column].equals("X")&&board[i+1][column].equals("O")) {
+                    int j = i + 1;
+                    boolean eval = true;
+                    while(j < row){
+                        if(!board[j][column].equals("O")){
+                            eval = false;
+                            break;
+                        }
+                        j++;
+                    }
+                    if(eval) {
+                        result[2][0] = i;
+                        result[2][1] = column;
+                    }else{
+                        result[2][0] = -1;
+                        result[2][1] = -1;
+                    }
                     break; //quit
                 //the space is illegal (catch all)
                 } else {
@@ -709,9 +753,25 @@ public class Othello {
                     result[3][1] = -1;
                     break;
                 //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                }else if (board[y][x].equals("X")){
-                    result[3][0] = y;
-                    result[3][1] = x;
+                }else if (board[y][x].equals("X")&&board[y+1][x-1].equals("O")){
+                    int i = x-1;
+                    int j = y+1;
+                    boolean eval = true;
+                    while(j < row && i > column){
+                        if(!board[j][i].equals("O")){
+                            eval = false;
+                            break;
+                        }
+                        j++;
+                        i--;
+                    }
+                    if(eval){
+                        result[3][0] = y;
+                        result[3][1] = x;
+                    }else{
+                        result[3][0] = -1;
+                        result[3][1] = -1;
+                    }
                     break;
                 //the space is illegal (catch all)
                 }else{
@@ -730,9 +790,23 @@ public class Othello {
                     result[4][1] = -1;
                     break;
                 //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                } else if (board[row][i].equals("X")) {
-                    result[4][0] = row;
-                    result[4][1] = i;
+                } else if (board[row][i].equals("X")&&board[row][i-1].equals("O")) {
+                    int j = i - 1;
+                    boolean eval = true;
+                    while(j > column){
+                        if(!board[row][j].equals("O")){
+                            eval = false;
+                            break;
+                        }
+                        j--;
+                    }
+                    if(eval) {
+                        result[4][0] = row;
+                        result[4][1] = i;
+                    }else{
+                        result[4][0] = -1;
+                        result[4][1] = -1;
+                    }
                     break;
                 //the space is illegal (catch all)
                 } else {
@@ -751,9 +825,25 @@ public class Othello {
                     result[5][1] = -1;
                     break;
                 //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                }else if(board[y][x].equals("X")){
-                    result[5][0] = y;
-                    result[5][1] = x;
+                }else if(board[y][x].equals("X")&&board[y-1][x-1].equals("O")){
+                    int i = x - 1;
+                    int j = y - 1;
+                    boolean eval = true;
+                    while(j > row && i > column){
+                        if (!board[j][i].equals("O")){
+                            eval = false;
+                            break;
+                        }
+                        j--;
+                        i--;
+                    }
+                    if(eval) {
+                        result[5][0] = y;
+                        result[5][1] = x;
+                    }else{
+                        result[5][0] = -1;
+                        result[5][1] = -1;
+                    }
                     break;
                 //the space is illegal (catch all)
                 }else{
@@ -772,9 +862,23 @@ public class Othello {
                     result[6][1] = -1;
                     break;
                 //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                } else if (board[i][column].equals("X")) {
-                    result[6][0] = i;
-                    result[6][1] = column;
+                } else if (board[i][column].equals("X")&&board[i-1][column].equals("O")) {
+                    int j = i - 1;
+                    boolean eval = true;
+                    while(j > row){
+                        if (!board[j][column].equals("O")) {
+                            eval = false;
+                            break;
+                        }
+                        j--;
+                    }
+                    if(eval) {
+                        result[6][0] = i;
+                        result[6][1] = column;
+                    }else{
+                        result[6][0] = -1;
+                        result[6][1] = -1;
+                    }
                     break;
                 //the space is illegal (catch all)
                 } else {
@@ -793,9 +897,25 @@ public class Othello {
                     result[7][1] = -1;
                     break;
                 //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                }else if(board[y][x].equals("X")){
-                    result[7][0] = y;
-                    result[7][1] = x;
+                }else if(board[y][x].equals("X") && board[y-1][x-1].equals("O")){
+                    int i = x + 1;
+                    int j = y - 1;
+                    boolean eval = true;
+                    while(j > column && i < row){
+                        if (!board[j][i].equals("O")) {
+                            eval = false;
+                            break;
+                        }
+                        i++;
+                        j--;
+                    }
+                    if(eval) {
+                        result[7][0] = y;
+                        result[7][1] = x;
+                    }else{
+                        result[7][0] = -1;
+                        result[7][1] = -1;
+                    }
                     break;
                 //the space is illegal (catch all)
                 }else{
@@ -808,19 +928,32 @@ public class Othello {
             }
         //if it is the computer's turn
         }else {
-            //checks to the left of the given coordinates to see if there is an open space or an enemy space
             for (int i = column - 1; i > 0; i--) {
                 //if the space is empty, the space at these coordinates is illegal
                 if (board[row][i].equals("-")) {
                     result[0][0] = -1;
                     result[0][1] = -1;
-                    break;
-                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                } else if (board[row][i].equals("O")) {
-                    result[0][0] = row;
-                    result[0][1] = i;
-                    break;
-                //the space is illegal (catch all)
+                    break; //quit
+                    //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
+                } else if (board[row][i].equals("O")&&board[row][i+1].equals("X")) {
+                    int j = i + 1;
+                    boolean eval = true;
+                    while (j < column) {
+                        if (!board[row][j].equals("X")) {
+                            eval = false;
+                            break;
+                        }
+                        j++;
+                    }
+                    if (eval) {
+                        result[0][0] = row;
+                        result[0][1] = i;
+                    } else {
+                        result[0][0] = -1;
+                        result[0][1] = -1;
+                    }
+                    break; //quit
+                    //the space is illegal (catch all)
                 } else {
                     result[0][0] = -1;
                     result[0][1] = -1;
@@ -836,13 +969,29 @@ public class Othello {
                     result[1][0] = -1;
                     result[1][1] = -1;
                     break;
-                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                } else if (board[y][x].equals("O")) {
-                    result[1][0] = y;
-                    result[1][1] = x;
+                    //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
+                } else if (board[y][x].equals("O")&&board[y+1][x+1].equals("X")) {
+                    int i = x + 1;
+                    int j = y + 1;
+                    boolean eval = true;
+                    while (j < row && i < column) {
+                        if (!board[j][i].equals("X")) {
+                            eval = false;
+                            break;
+                        }
+                        j++;
+                        i++;
+                    }
+                    if (eval) {
+                        result[1][0] = row;
+                        result[1][1] = i;
+                    } else {
+                        result[1][0] = -1;
+                        result[1][1] = -1;
+                    }
                     break;
+                    //the space is illegal (catch all)
                 } else {
-                //the space is illegal (catch all)
                     result[1][0] = -1;
                     result[1][1] = -1;
                 }
@@ -856,13 +1005,27 @@ public class Othello {
                 if (board[i][column].equals("-")) {
                     result[2][0] = -1;
                     result[2][1] = -1;
-                    break;
-                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                } else if (board[i][column].equals("O")) {
-                    result[2][0] = i;
-                    result[2][1] = column;
-                    break;
-                //the space is illegal (catch all)
+                    break; //quit
+                    //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
+                } else if (board[i][column].equals("O")&&board[i+1][column].equals("X")) {
+                    int j = i + 1;
+                    boolean eval = true;
+                    while (j < row) {
+                        if (!board[j][column].equals("X")) {
+                            eval = false;
+                            break;
+                        }
+                        j++;
+                    }
+                    if (eval) {
+                        result[2][0] = i;
+                        result[2][1] = column;
+                    } else {
+                        result[2][0] = -1;
+                        result[2][1] = -1;
+                    }
+                    break; //quit
+                    //the space is illegal (catch all)
                 } else {
                     result[2][0] = -1;
                     result[2][1] = -1;
@@ -872,18 +1035,34 @@ public class Othello {
             //iterate one up and one right
             x = column + 1;
             y = row - 1;
-            while (x < board.length && y > 0) {
+            while (x < board.length && y > 0) { //Up-Right;
                 //if the space is empty, the space at these coordinates is illegal
                 if (board[y][x].equals("-")) {
                     result[3][0] = -1;
                     result[3][1] = -1;
                     break;
-                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                } else if (board[y][x].equals("O")) {
-                    result[3][0] = y;
-                    result[3][1] = x;
+                    //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
+                } else if (board[y][x].equals("O")&&board[y+1][x-1].equals("X")) {
+                    int i = x - 1;
+                    int j = y + 1;
+                    boolean eval = true;
+                    while (j < row && i > column) {
+                        if (!board[j][i].equals("X")) {
+                            eval = false;
+                            break;
+                        }
+                        j++;
+                        i--;
+                    }
+                    if (eval) {
+                        result[3][0] = y;
+                        result[3][1] = x;
+                    } else {
+                        result[3][0] = -1;
+                        result[3][1] = -1;
+                    }
                     break;
-                //the space is illegal (catch all)
+                    //the space is illegal (catch all)
                 } else {
                     result[3][0] = -1;
                     result[3][1] = -1;
@@ -899,12 +1078,26 @@ public class Othello {
                     result[4][0] = -1;
                     result[4][1] = -1;
                     break;
-                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                } else if (board[row][i].equals("O")) {
-                    result[4][0] = row;
-                    result[4][1] = i;
+                    //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
+                } else if (board[row][i].equals("O")&&board[row][i-1].equals("X")) {
+                    int j = i - 1;
+                    boolean eval = true;
+                    while (j > column) {
+                        if (!board[row][j].equals("X")) {
+                            eval = false;
+                            break;
+                        }
+                        j--;
+                    }
+                    if (eval) {
+                        result[4][0] = row;
+                        result[4][1] = i;
+                    } else {
+                        result[4][0] = -1;
+                        result[4][1] = -1;
+                    }
                     break;
-                //the space is illegal (catch all)
+                    //the space is illegal (catch all)
                 } else {
                     result[4][0] = -1;
                     result[4][1] = -1;
@@ -920,12 +1113,28 @@ public class Othello {
                     result[5][0] = -1;
                     result[5][1] = -1;
                     break;
-                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                } else if (board[y][x].equals("O")) {
-                    result[5][0] = y;
-                    result[5][1] = x;
+                    //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
+                } else if (board[y][x].equals("O")&&board[y-1][x-1].equals("X")) {
+                    int i = x - 1;
+                    int j = y - 1;
+                    boolean eval = true;
+                    while (j > row && i > column) {
+                        if (!board[j][i].equals("X")) {
+                            eval = false;
+                            break;
+                        }
+                        j--;
+                        i--;
+                    }
+                    if (eval) {
+                        result[5][0] = y;
+                        result[5][1] = x;
+                    } else {
+                        result[5][0] = -1;
+                        result[5][1] = -1;
+                    }
                     break;
-                //the space is illegal (catch all)
+                    //the space is illegal (catch all)
                 } else {
                     result[5][0] = -1;
                     result[5][1] = -1;
@@ -941,12 +1150,26 @@ public class Othello {
                     result[6][0] = -1;
                     result[6][1] = -1;
                     break;
-                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                } else if (board[i][column].equals("O")) {
-                    result[6][0] = i;
-                    result[6][1] = column;
+                    //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
+                } else if (board[i][column].equals("O") && board[i-1][column].equals("X")) {
+                    int j = i - 1;
+                    boolean eval = true;
+                    while (j > row) {
+                        if (!board[j][column].equals("X")) {
+                            eval = false;
+                            break;
+                        }
+                        j--;
+                    }
+                    if (eval) {
+                        result[6][0] = i;
+                        result[6][1] = column;
+                    } else {
+                        result[6][0] = -1;
+                        result[6][1] = -1;
+                    }
                     break;
-                //the space is illegal (catch all)
+                    //the space is illegal (catch all)
                 } else {
                     result[6][0] = -1;
                     result[6][1] = -1;
@@ -962,12 +1185,28 @@ public class Othello {
                     result[7][0] = -1;
                     result[7][1] = -1;
                     break;
-                //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                } else if (board[y][x].equals("O")) {
-                    result[7][0] = y;
-                    result[7][1] = x;
+                    //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
+                } else if (board[y][x].equals("O")&&board[y-1][x+1].equals("X")) {
+                    int i = x + 1;
+                    int j = y - 1;
+                    boolean eval = true;
+                    while (j > column && i < row) {
+                        if (!board[j][i].equals("X")) {
+                            eval = false;
+                            break;
+                        }
+                        i++;
+                        j--;
+                    }
+                    if (eval) {
+                        result[7][0] = y;
+                        result[7][1] = x;
+                    } else {
+                        result[7][0] = -1;
+                        result[7][1] = -1;
+                    }
                     break;
-                //the space is illegal (catch all)
+                    //the space is illegal (catch all)
                 } else {
                     result[7][0] = -1;
                     result[7][1] = -1;
@@ -985,26 +1224,29 @@ public class Othello {
      * The getBestMove() method, utilized in the placePieceCPU() method, creates an integer array of the coordinate of
      * the best move that the computer can make in order to obtain the most pieces on this the turn.
      *
-     * @param player boolean that determines if the method should be run for the player of the computer
+     *
      * @return integer array representing coordinate of the best move the computer can make
      */
-    public int[] getBestMoveCPU(boolean player){
+    public int[] getBestMoveCPU(){
         //integer array for the coordinate, integers for counter sum and comparing sum
         int[] move = new int[2];
         int sum = 0;
         int maxsum = 0;
         //an ArrayList for the legal moves of the player, an integer matrix for the list of coordinates of legal moves
-        ArrayList<int[]> moveList = allLegalMoves(player); //will always be called as false in this case
+        ArrayList<int[]> moveList = allLegalMoves(false); //will always be called as false in this case
         int[][] legalList;
         //an integer array for any coordinates to compare to
-        int[] coordinates = new int[2];
-
+        int[] coordinates;
+        for(int i = 0; i < moveList.size(); i++){
+            coordinates = moveList.get(i);
+            System.out.println("("+coordinates[0]+","+coordinates[1]+")");
+        }
         //traverses the ArrayList of the computer's legal moves to find the best one, comparing each one's total pieces
         //changed to find the greatest change
         for(int i = 0; i < moveList.size(); i++){
             //coordinates becomes the set at index i; the list becomes all moves that the computer is allowed to play
             coordinates = moveList.get(i);
-            legalList = getLegal(player, coordinates[0], coordinates[1]);
+            legalList = getLegal(false, coordinates[0], coordinates[1]);
             for(int j = 0; j < legalList.length; j++){
                 if(legalList[j][0] != -1 && legalList[j][1] != -1){
                     if(legalList[j][1] != coordinates[1]){
@@ -1016,6 +1258,7 @@ public class Othello {
             }
             //if the new is greater than the previous maximum sum, then the new sum is the highest and the corresponding
             //move is the best move that the computer can make
+            System.out.println(sum);
             if(sum > maxsum){
                 maxsum = sum;
                 move = moveList.get(i);
@@ -1023,6 +1266,7 @@ public class Othello {
             sum = 0;
         }
         //returns the best coordinate for the computer to play
+        System.out.println(maxsum);
         return move;
     }
 
