@@ -112,7 +112,8 @@ class ClientHandler extends Thread {
                     out.flush();
 
 				}
-
+                int row;
+                int col;
 
                 while(true)
                 {
@@ -134,11 +135,11 @@ class ClientHandler extends Thread {
                     out.write("[SERVER] >>> LEGAL MOVES: " + movesya + "\nPlease enter row: ");
                     out.newLine();
                     out.flush();
-                    int row = Integer.parseInt(in.readLine());
+                    row = Integer.parseInt(in.readLine());
                     out.write("Please enter column: ");
                     out.newLine();
                     out.flush();
-                    int col = Integer.parseInt(in.readLine());
+                    col = Integer.parseInt(in.readLine());
                     game.placePiecePlayer(row, col);
                     board = game.printBoard();
                     for(int i = 0; i < board.length; i++){
@@ -219,9 +220,6 @@ class ClientHandler extends Thread {
         {
             oos.writeObject(hT);
             System.out.println("[SERVER] >>> Hashtable has been serialized to " + fileName + ".");
-
-
-
         }
         catch (IOException e) {
             throw new RuntimeException(e);
