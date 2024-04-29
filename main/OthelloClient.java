@@ -54,36 +54,66 @@ public class OthelloClient {
                     System.out.println(in.readLine());
                 }
             }
+
             while(true)
             {
                 for(int i = 0; i < 11; i++){
                     System.out.println(in.readLine());
                 }
-                System.out.println(in.readLine());
-                System.out.println(in.readLine());
-                clientResp = clientScan.nextLine();
-                out.write(clientResp);
-                out.newLine();
-                out.flush();
-                System.out.println(in.readLine());
-                clientResp = clientScan.nextLine();
-                out.write(clientResp);
-                out.newLine();
-                out.flush();
-                System.out.println("[YOUR MOVE] ");
-                for(int i = 0; i < 11; i++){
-                    System.out.println(in.readLine());
-                }
-                System.out.println("[CPU MOVE]");
-                for(int i = 0; i < 11; i++){
-                    System.out.println(in.readLine());
-                }
-                System.out.println("Done printing");
+                serverResp = in.readLine();
+                if(!serverResp.equals("[SERVER] >>> No moves. Your turn is skipped.")) {
+                    System.out.println(serverResp);
+                    boolean control = true;
+                    while (control) {
+                        System.out.println(in.readLine());
+                        clientResp = clientScan.nextLine();
+                        out.write(clientResp);
+                        out.newLine();
+                        out.flush();
+                        serverResp = in.readLine();
+                        if (serverResp.equals("Done")) {
+                            control = false;
+                        } else {
+                            System.out.println(serverResp);
+                        }
 
+                    }
+                    control = true;
+                    while (control) {
+                        System.out.println(in.readLine());
+                        clientResp = clientScan.nextLine();
+                        out.write(clientResp);
+                        out.newLine();
+                        out.flush();
+                        serverResp = in.readLine();
+                        if (serverResp.equals("Done")) {
+                            control = false;
+                        } else {
+                            System.out.println(serverResp);
+                        }
+
+                    }
+                    System.out.println("[YOUR MOVE] ");
+                    for (int i = 0; i < 11; i++) {
+                        System.out.println(in.readLine());
+                    }
+                }else{
+                    System.out.println(serverResp);
+                }
+
+                serverResp = in.readLine();
+                System.out.println(serverResp);
+                if(!serverResp.equals("[SERVER] >>> No CPU moves. Their turn is skipped.")) {
+                    System.out.println("[CPU MOVE]");
+                    for (int i = 0; i < 11; i++) {
+                        System.out.println(in.readLine());
+                    }
+                }else{
+                    System.out.println(serverResp);
+                }
                 serverResp = in.readLine();
                 if (!serverResp.equalsIgnoreCase("[SERVER] >>> Do you want to save this board and quit? "))
                 {
-                    System.out.println("In if statement.");
                     System.out.println(serverResp);
                     break;
                 }
