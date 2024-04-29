@@ -14,43 +14,46 @@ public class OthelloClient {
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             Scanner clientScan = new Scanner(System.in);
+            boolean condition = true;
             String serverResp ="";
-            System.out.println(in.readLine());
-            String clientResp = clientScan.nextLine();
-            out.write(clientResp);
-            out.newLine();
-            out.flush();
+            String clientResp;
+            while(condition) {
+                System.out.println(in.readLine());
+                clientResp = clientScan.nextLine();
+                out.write(clientResp);
+                out.newLine();
+                out.flush();
 
-            if (clientResp.equalsIgnoreCase("yes"))
-            {
-                System.out.println(in.readLine());
-                clientResp = clientScan.nextLine();
-                out.write(clientResp);
-                out.newLine();
-                out.flush();
-                System.out.println(in.readLine());
-                clientResp = clientScan.nextLine();
-                out.write(clientResp);
-                out.newLine();
-                out.flush();
-                System.out.println(in.readLine());
+                if (clientResp.equalsIgnoreCase("yes")) {
+                    System.out.println(in.readLine());
+                    clientResp = clientScan.nextLine();
+                    out.write(clientResp);
+                    out.newLine();
+                    out.flush();
+                    System.out.println(in.readLine());
+                    clientResp = clientScan.nextLine();
+                    out.write(clientResp);
+                    out.newLine();
+                    out.flush();
+                    System.out.println(in.readLine());
+                    condition = false;
+                } else if (clientResp.equalsIgnoreCase("no")) {
+                    System.out.println(in.readLine());
+                    clientResp = clientScan.nextLine();
+                    out.write(clientResp);
+                    out.newLine();
+                    out.flush();
+                    System.out.println(in.readLine());
+                    clientResp = clientScan.nextLine();
+                    out.write(clientResp);
+                    out.newLine();
+                    out.flush();
+                    System.out.println(in.readLine());
+                    condition = false;
+                } else {
+                    System.out.println(in.readLine());
+                }
             }
-            else
-            {
-                System.out.println(in.readLine());
-                clientResp = clientScan.nextLine();
-                out.write(clientResp);
-                out.newLine();
-                out.flush();
-                System.out.println(in.readLine());
-                clientResp = clientScan.nextLine();
-                out.write(clientResp);
-                out.newLine();
-                out.flush();
-                System.out.println(in.readLine());
-            }
-
-
             while(true)
             {
                 for(int i = 0; i < 11; i++){

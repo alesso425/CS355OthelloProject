@@ -1,5 +1,4 @@
 package main;
-
 //import Java's input/output and Java's network functions
 import java.io.*;
 import java.net.*;
@@ -58,8 +57,8 @@ class ClientHandler extends Thread {
     @Override
     public void run()
     {
-        String userName;
-        String userPass;
+        String userName = "";
+        String userPass = "";
         Othello game = null;
         ArrayList <int[]> moveList;
         String[] board;
@@ -70,15 +69,16 @@ class ClientHandler extends Thread {
             //
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            out.write("[SERVER] >>> Do you want to generate a new game?    Yes or No? ");
-            out.newLine();
-            out.flush();
-			String clientResp = null;
-            clientResp = in.readLine();
-            if (clientResp.equalsIgnoreCase("yes"))
-				{
-					System.out.println("Client said yes."); //For Troubleshooting. Will comment after Othello
-					//Create a new game (new Othello Object) prompt player for  name and personal pass.
+            boolean condition = true;
+            while(condition) {
+                out.write("[SERVER] >>> Do you want to generate a new game?    Yes or No? ");
+                out.newLine();
+                out.flush();
+                String clientResp = null;
+                clientResp = in.readLine();
+                if (clientResp.equalsIgnoreCase("yes")) {
+                    System.out.println("Client said yes."); //For Troubleshooting. Will comment after Othello
+                    //Create a new game (new Othello Object) prompt player for  name and personal pass.
                     out.write("[SERVER] >>> Enter desired username.  ");
                     out.newLine();
                     out.flush();
@@ -91,12 +91,11 @@ class ClientHandler extends Thread {
                     out.newLine();
                     out.flush();
                     game = new Othello(userName, userPass);
-
-				}
-            //Prompt player for existing username and password to resume game.
-            //If input name and password is invalid, throw an exception to handle.
-				else 
-				{
+                    condition = false;
+                }
+                //Prompt player for existing username and password to resume game.
+                //If input name and password is invalid, throw an exception to handle.
+                else if (clientResp.equalsIgnoreCase("no")) {
                     out.write("[SERVER] >>> Enter desired username.  ");
                     out.newLine();
                     out.flush();
@@ -105,13 +104,18 @@ class ClientHandler extends Thread {
                     out.newLine();
                     out.flush();
                     userPass = in.readLine();
-                    Hashtable <String, Othello> hT = loadGame(userName+userPass);
-                    game = hT.get(userName+userPass);
+                    Hashtable<String, Othello> hT = loadGame(userName + userPass);
+                    game = hT.get(userName + userPass);
                     out.write("[SERVER] >>> Game retrieved. ");
                     out.newLine();
                     out.flush();
-
-				}
+                    condition = false;
+                } else {
+                    out.write("Invalid input. Please try again.");
+                    out.newLine();
+                    out.flush();
+                }
+            }
                 int row;
                 int col;
 
@@ -132,7 +136,10 @@ class ClientHandler extends Thread {
                         movesya += "["+showyamoves[0]+ "," + showyamoves[1]+"]"+" , ";
                     }
 
-                    out.write("[SERVER] >>> LEGAL MOVES: " + movesya + "\nPlease enter row: ");
+                    out.write("[SERVER] >>> LEGAL MOVES: " + movesya);
+                    out.newLine();
+                    out.flush();
+                    out.write("Please enter row: ");
                     out.newLine();
                     out.flush();
                     row = Integer.parseInt(in.readLine());
@@ -231,7 +238,7 @@ class ClientHandler extends Thread {
         Hashtable <String, Othello> hT = null;
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName)))
         {
-            hT = (Hashtable<String, Othello>) ois.readObject();
+            hT = (Hashtable<String, Othello>)ois.readObject();
 
         }
 

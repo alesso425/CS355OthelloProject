@@ -3,12 +3,13 @@ package main;
 //import Java ArrayList and Math functions
 import java.util.ArrayList;
 import java.lang.Math;
+import java.io.Serializable;
 
 /**
  * The Othello class serves as the foundation of a game of Othello. When a client connects to the server, a new thread
  * launches an instance of Othello and the server and client can interact with each other to play the game.
  */
-public class Othello {
+public class Othello implements Serializable{
     private String name;
     private String pass;
     private String[][] board;
@@ -40,10 +41,10 @@ public class Othello {
         }
         //changes the center four squares to two player chips and two computer chips
         board[0][0] = " ";
-        //board[4][4] = "X"; //player's piece
-        //board[5][5] = "X";
-        //board[4][5] = "O"; //computer's piece
-        //board[5][4] = "O";
+        board[4][4] = "X"; //player's piece
+        board[5][5] = "X";
+        board[4][5] = "O"; //computer's piece
+        board[5][4] = "O";
     }
 
     /**
@@ -77,9 +78,9 @@ public class Othello {
         //traverses the entire board counting both the player's and computer's pieces, adding them to the corresponding scores
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] == "O"){    //CPU
+                if (board[i][j].equals("O")){    //CPU
                     x[0]++;
-                }else if(board[i][j] == "X"){ //Player
+                }else if(board[i][j].equals("X")){ //Player
                     x[1]++;
                 }
             }
@@ -897,7 +898,7 @@ public class Othello {
                     result[7][1] = -1;
                     break;
                 //if the space is X, the space at these coordinates is legal, set the coordinates to the integer matrix
-                }else if(board[y][x].equals("X") && board[y-1][x-1].equals("O")){
+                }else if(board[y][x].equals("X") && board[y-1][x+1].equals("O")){
                     int i = x + 1;
                     int j = y - 1;
                     boolean eval = true;
@@ -1237,10 +1238,12 @@ public class Othello {
         int[][] legalList;
         //an integer array for any coordinates to compare to
         int[] coordinates;
+        /**
         for(int i = 0; i < moveList.size(); i++){
             coordinates = moveList.get(i);
             System.out.println("("+coordinates[0]+","+coordinates[1]+")");
         }
+        **/
         //traverses the ArrayList of the computer's legal moves to find the best one, comparing each one's total pieces
         //changed to find the greatest change
         for(int i = 0; i < moveList.size(); i++){
@@ -1258,7 +1261,7 @@ public class Othello {
             }
             //if the new is greater than the previous maximum sum, then the new sum is the highest and the corresponding
             //move is the best move that the computer can make
-            System.out.println(sum);
+            //System.out.println(sum);
             if(sum > maxsum){
                 maxsum = sum;
                 move = moveList.get(i);
@@ -1266,7 +1269,7 @@ public class Othello {
             sum = 0;
         }
         //returns the best coordinate for the computer to play
-        System.out.println(maxsum);
+        //System.out.println(maxsum);
         return move;
     }
 
