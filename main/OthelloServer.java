@@ -14,7 +14,6 @@ import java.util.Hashtable;
 public class OthelloServer {
 	public static void main(String[] args){
         try {
-			Othello[] clientGames;
             ServerSocket serverSocket = new ServerSocket(9999); // Port number
             System.out.println("Game server is running...");
 
@@ -261,13 +260,6 @@ class ClientHandler extends Thread {
                     }
                 }
 
-            // Read from/write to clientSocket's input/output streams
-
-
-            // Send acknowledgment to the client
-
-           // out.println("ACK: Game state saved successfully!");
-
             clientSocket.close();
         }
         catch (IOException e) {
@@ -297,14 +289,11 @@ class ClientHandler extends Thread {
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName)))
         {
             hT = (Hashtable<String, Othello>)ois.readObject();
-
         }
-
         catch (ClassNotFoundException  | IOException e)
         {
             throw new RuntimeException(e);
         }
-
         return hT;
     }
 }

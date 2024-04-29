@@ -565,36 +565,24 @@ public class Othello implements Serializable{
      */
     public ArrayList<int[]> allLegalMoves(boolean player)
     {
-        //declares an ArrayList of the type integer array
-        ArrayList<int[]> list = new ArrayList<int[]>();
-        //declare an empty integer array
-        int[] x;
-        //if it is the player's turn
-        if (player)
-        {
+        ArrayList<int[]> list = new ArrayList<int[]>(); //declares an ArrayList of the type integer array
+        int[] x; //declare an empty integer array
+
+        if (player) { //if it is the player's turn
             //traverses the board finding coordinates that would work for the player and adding them to the list
-            for (int i = 0; i < board.length; i++)
-            {
-                for (int j = 0; j < board[i].length; j++)
-                {
-                    if (board[i][j].equals("-") && isLegal(true, i, j))
-                    {
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board[i].length; j++) {
+                    if (board[i][j].equals("-") && isLegal(true, i, j)) {
                         x = new int[]{i, j};
                         list.add(x);
                     }
                 }
             }
-        }
-        //if it is the computer's turn
-        else
-        {
+        } else { //if it is the computer's turn
             //traverses the board finding coordinates that would work for the computer and adding them to the list
-            for (int i = 0; i < board.length; i++)
-            {
-                for (int j = 0; j < board[i].length; j++)
-                {
-                    if (board[i][j].equals("-") && isLegal(false, i, j))
-                    {
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board[i].length; j++) {
+                    if (board[i][j].equals("-") && isLegal(false, i, j)) {
                         x = new int[]{i,j};
                         list.add(x);
                     }
@@ -1243,12 +1231,6 @@ public class Othello implements Serializable{
         int[][] legalList;
         //an integer array for any coordinates to compare to
         int[] coordinates;
-        /**
-        for(int i = 0; i < moveList.size(); i++){
-            coordinates = moveList.get(i);
-            System.out.println("("+coordinates[0]+","+coordinates[1]+")");
-        }
-        **/
         //traverses the ArrayList of the computer's legal moves to find the best one, comparing each one's total pieces
         //changed to find the greatest change
         for(int i = 0; i < moveList.size(); i++){
@@ -1266,7 +1248,6 @@ public class Othello implements Serializable{
             }
             //if the new is greater than the previous maximum sum, then the new sum is the highest and the corresponding
             //move is the best move that the computer can make
-            //System.out.println(sum);
             if(sum > maxsum){
                 maxsum = sum;
                 move = moveList.get(i);
@@ -1274,7 +1255,6 @@ public class Othello implements Serializable{
             sum = 0;
         }
         //returns the best coordinate for the computer to play
-        //System.out.println(maxsum);
         return move;
     }
 
