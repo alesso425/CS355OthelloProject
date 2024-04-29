@@ -63,8 +63,8 @@ class ClientHandler extends Thread {
         ArrayList <int[]> moveList;
         String[] board;
         try {
-			
-			//Prompt if player is new, If so, ask for new name and pass. If not, ask for saved name and pass. 
+
+			//Prompt if player is new, If so, ask for new name and pass. If not, ask for saved name and pass.
 
             //
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
@@ -116,8 +116,8 @@ class ClientHandler extends Thread {
                     out.flush();
                 }
             }
-                int row;
-                int col;
+                int row = 0;
+                int col = 0;
 
                 while(true)
                 {
@@ -128,60 +128,118 @@ class ClientHandler extends Thread {
                         out.flush();
                     }
                     moveList = game.allLegalMoves(true);
-                    int[] showyamoves = new int[2];
+                    int[] showyamoves;
                     String movesya = "";
                     for(int i = 0; i < moveList.size(); i++)
                     {
                         showyamoves = moveList.get(i);
                         movesya += "["+showyamoves[0]+ "," + showyamoves[1]+"]"+" , ";
                     }
+                    if(!moveList.isEmpty()) {
+                        out.write("[SERVER] >>> LEGAL MOVES: " + movesya);
+                        out.newLine();
+                        out.flush();
+                        boolean control = true;
+                        while (control) {
+                            out.write("Please enter row: ");
+                            out.newLine();
+                            out.flush();
+                            try {
+                                row = Integer.parseInt(in.readLine());
+                                for (int i = 0; i < moveList.size(); i++) {
+                                    int xs[] = moveList.get(i);
+                                    if (row == xs[0]) {
+                                        control = false;
+                                    }
+                                }
+                            } catch (Exception e) {
+                            }
+                            if (control) {
+                                out.write("Invalid input. Please try again.");
+                                out.newLine();
+                                out.flush();
+                            } else {
+                                out.write("Done");
+                                out.newLine();
+                                out.flush();
+                            }
 
-                    out.write("[SERVER] >>> LEGAL MOVES: " + movesya);
-                    out.newLine();
-                    out.flush();
-                    out.write("Please enter row: ");
-                    out.newLine();
-                    out.flush();
-                    row = Integer.parseInt(in.readLine());
-                    out.write("Please enter column: ");
-                    out.newLine();
-                    out.flush();
-                    col = Integer.parseInt(in.readLine());
-                    game.placePiecePlayer(row, col);
-                    board = game.printBoard();
-                    for(int i = 0; i < board.length; i++){
-                        out.write(board[i]);
+                        }
+                        control = true;
+                        while (control) {
+                            out.write("Please enter column: ");
+                            out.newLine();
+                            out.flush();
+                            try {
+                                col = Integer.parseInt(in.readLine());
+                                for (int i = 0; i < moveList.size(); i++) {
+                                    int xs[] = moveList.get(i);
+                                    if (col == xs[1] && row == xs[0]) {
+                                        control = false;
+                                    }
+                                }
+                            } catch (Exception e) {
+                            }
+                            if (control) {
+                                out.write("Invalid input. Please try again.");
+                                out.newLine();
+                                out.flush();
+                            } else {
+                                out.write("Done");
+                                out.newLine();
+                                out.flush();
+                            }
+                        }
+                        game.placePiecePlayer(row, col);
+                        board = game.printBoard();
+                        for(int i = 0; i < board.length; i++){
+                            out.write(board[i]);
+                            out.newLine();
+                            out.flush();
+                        }
+                    }else{
+                        out.write("[SERVER] >>> No moves. Your turn is skipped.");
                         out.newLine();
                         out.flush();
                     }
 
-                    game.placePieceCPU();
-                    board = game.printBoard();
-                    for(int i = 0; i < board.length; i++){
-                        out.write(board[i]);
+
+                    int value = game.placePieceCPU();
+                    System.out.println("Value = "+value);
+                    if(value != 0) {
+                        out.write("Successful.");
                         out.newLine();
                         out.flush();
-                        System.out.println(board[i]);
+                        board = game.printBoard();
+                        for (int i = 0; i < board.length; i++) {
+                            out.write(board[i]);
+                            out.newLine();
+                            out.flush();
+                        }
+                    }else{
+                        out.write("[SERVER] >>> No CPU moves. Their turn is skipped.");
+                        out.newLine();
+                        out.flush();
                     }
 
                     int gameState = game.checkWin();
                     System.out.println(gameState);
                     if (gameState == 1)
                     {
-                        out.write("[PLAYER WINS, YIPPEE!, GET REKT BOT. ]");
+                        out.write("[PLAYER WINS. CONGRATULATIONS!]");
                         out.newLine();
                         out.flush();
                         break;
                     }
                     else if (gameState == 2)
                     {
-                        out.write("[CPU WINS, YOU ARE ACTUALLY BAD, LIKE DON'T EVEN SAVE AGAIN. /exit now. ]");
+                        out.write("[CPU WINS. BETTER LUCK NEXT TIME!]");
                         out.newLine();
                         out.flush();
                         break;
                     } else if (gameState == 3)
                     {
-                        out.write("[DRAW. EVERYONE LOSES, YA DON'T GOT IT, HOW DOES AI EVEN LOSE, LIKE WHAT????]");
+                        out.write("[DRAW. GAME OVER!]");
                         out.newLine();
                         out.flush();
                         break;
@@ -204,7 +262,7 @@ class ClientHandler extends Thread {
                 }
 
             // Read from/write to clientSocket's input/output streams
-			
+
 
             // Send acknowledgment to the client
 
@@ -220,7 +278,7 @@ class ClientHandler extends Thread {
 
     }
 
-    
+
     public static void saveGame(Hashtable <String, Othello> hT, String fileName)
     {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName)))

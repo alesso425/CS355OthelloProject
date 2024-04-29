@@ -59,8 +59,8 @@ public class Othello implements Serializable{
                 result[i] += board[i][j] + " ";
             }
         }
-        result[9] = "Number of Player Pieces: " + pieces[1];
-        result[10] =  "Number of CPU Pieces: " + pieces[0];
+        result[9] = "Number of Player Pieces (X): " + pieces[1];
+        result[10] =  "Number of CPU Pieces (O): " + pieces[0];
         return result;
     }
 
@@ -158,15 +158,20 @@ public class Othello implements Serializable{
      * method also changes pieces based on what connects to your piece to some of the computer's existing pieces,
      * taking those pieces away from the player. Lastly, the placePieceCPU() method prints the changed Othello board.
      */
-    public void placePieceCPU(){
+    public int placePieceCPU(){
         int[] bestMove = getBestMoveCPU();
         int row = bestMove[0];
         int column = bestMove[1];
-        board[row][column] = "O";
+        if(row != 0 && column != 0) {
+            board[row][column] = "O";
 
-        setHoriz(false, row, column);
-        setVert(false, row, column);
-        setDiag(false, row, column);
+            setHoriz(false, row, column);
+            setVert(false, row, column);
+            setDiag(false, row, column);
+            return 1;
+        }else{
+            return 0;
+        }
     }
 
     /**
