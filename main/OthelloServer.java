@@ -261,6 +261,8 @@ class ClientHandler extends Thread {
                 }
 
             clientSocket.close();
+            in.close();
+            out.close();
         }
         catch (IOException e) {
             e.printStackTrace();

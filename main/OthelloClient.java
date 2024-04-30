@@ -133,12 +133,13 @@ public class OthelloClient {
                 }
             }
 
-
-
+            clientScan.close();
+            out.close();
+            in.close();
         } catch (IOException e)
         {
             throw new RuntimeException(e);
         }
-        //socket.close();
+
     }
 }
